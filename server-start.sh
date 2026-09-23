@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Server startup script
-echo "Starting Vivaaha API Server..."
+echo "Starting Super Sathi API Server..."
 
 # Kill existing processes
 pkill -f "node src/app.js"

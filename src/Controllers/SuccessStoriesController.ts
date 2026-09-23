@@ -20,12 +20,12 @@ const BUCKET_NAME = process.env.AWS_BUCKET_NAME || "images-2025-new";
 // Submit Success Story
 export async function submitSuccessStory(req, res) {
   try {
-    const { 
-      user_name, 
-      partner_name, 
-      user_email, 
-      partner_email, 
-      first_met_date, 
+    const {
+      user_name,
+      partner_name,
+      user_email,
+      partner_email,
+      first_met_date,
       wedding_date,
       do_not_disclose,
       not_yet_fixed,
@@ -43,12 +43,12 @@ export async function submitSuccessStory(req, res) {
     }
 
     let photoUrl = null;
-    
+
     // Handle photo upload if present
     if (photo) {
       const fileExtension = path.extname(photo.originalname);
       const fileName = `success-stories/${Date.now()}${fileExtension}`;
-      
+
       const uploadParams = {
         Bucket: BUCKET_NAME,
         Key: fileName,
@@ -69,7 +69,7 @@ export async function submitSuccessStory(req, res) {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
       user_name, partner_name, user_email, partner_email || null,
-      first_met_date || null, wedding_date || null, 
+      first_met_date || null, wedding_date || null,
       do_not_disclose ? 1 : 0, not_yet_fixed ? 1 : 0,
       story_content, photoUrl, agree_to_terms ? 1 : 0, feature_in_stories ? 1 : 0
     ]);
@@ -86,9 +86,9 @@ export async function submitSuccessStory(req, res) {
           recipientName: user_name,
           templateKey: "success_story",
           variables: { user_name, partner_name },
-          fallbackSubject: 'Thank You for Sharing Your Success Story - Vivaaha Matrimony',
+          fallbackSubject: 'Thank You for Sharing Your Success Story - Super Sathi Matrimony',
           fallbackBody: `Dear ${user_name}, we are delighted to receive your success story with ${partner_name}. Our team will review your story within 2-3 business days.`,
-          fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px"><h1 style="color:#d4af37">Thank You!</h1><p>Dear ${user_name},</p><p>We are delighted to receive your beautiful success story with ${partner_name}!</p><p>Our team will review your story within 2-3 business days. Once approved, it will be featured on our Success Stories page.</p><p>With warm regards,<br><strong>The Vivaaha Matrimony Team</strong></p></div>`,
+          fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px"><h1 style="color:#d4af37">Thank You!</h1><p>Dear ${user_name},</p><p>We are delighted to receive your beautiful success story with ${partner_name}!</p><p>Our team will review your story within 2-3 business days. Once approved, it will be featured on our Success Stories page.</p><p>With warm regards,<br><strong>The Super Sathi Matrimony Team</strong></p></div>`,
           meta: { event: "success_story", connectionId: result.insertId },
         },
       });
@@ -103,9 +103,9 @@ export async function submitSuccessStory(req, res) {
     });
   } catch (error) {
     console.error("Submit Success Story Error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Failed to submit story. Please try again later." 
+    res.status(500).json({
+      success: false,
+      message: "Failed to submit story. Please try again later."
     });
   }
 }

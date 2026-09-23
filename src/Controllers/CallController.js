@@ -298,9 +298,9 @@ async function createCall(req, res) {
                         call_type,
                         call_id: callId,
                     },
-                    fallbackSubject: `Incoming ${call_type.charAt(0).toUpperCase() + call_type.slice(1)} Call - Vivaaha Matrimony`,
-                    fallbackBody: `You have an incoming ${call_type} call from ${caller.first_name} ${caller.last_name}. Please open your Vivaaha app to accept or decline the call.`,
-                    fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Incoming ${call_type} Call</h2><p>You have an incoming ${call_type} call from <strong>${caller.first_name} ${caller.last_name}</strong>.</p><p>Please open your Vivaaha app to accept or decline the call.</p><p>Best regards,<br>Vivaaha Matrimony Team</p></div>`,
+                    fallbackSubject: `Incoming ${call_type.charAt(0).toUpperCase() + call_type.slice(1)} Call - Super Sathi Matrimony`,
+                    fallbackBody: `You have an incoming ${call_type} call from ${caller.first_name} ${caller.last_name}. Please open your Super Sathi app to accept or decline the call.`,
+                    fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Incoming ${call_type} Call</h2><p>You have an incoming ${call_type} call from <strong>${caller.first_name} ${caller.last_name}</strong>.</p><p>Please open your Super Sathi app to accept or decline the call.</p><p>Best regards,<br>Super Sathi Matrimony Team</p></div>`,
                     meta: {
                         event: "incoming_call",
                         senderUserId: userId,

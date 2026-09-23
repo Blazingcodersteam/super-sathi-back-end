@@ -63,7 +63,7 @@ async function generateInvoicePDF(payment: any): Promise<string> {
       // Header - INVOICE (Blue)
       doc.fontSize(36).fillColor('#2196F3').text('INVOICE', leftMargin, 60, { width: 200 });
 
-      // Right side - Logo and VIVAAHA (right-aligned within content area)
+      // Right side - Logo and Super Sathi (right-aligned within content area)
       try {
         const logoPath = path.resolve(process.cwd(), 'src/logo.png');
         if (fs.existsSync(logoPath)) {
@@ -72,8 +72,8 @@ async function generateInvoicePDF(payment: any): Promise<string> {
       } catch (err) {
         console.log('Logo not found, skipping');
       }
-      doc.fontSize(20).fillColor('#FFA726').text('VIVAAHA', leftMargin, 110, { width: contentWidth, align: 'right' });
-      doc.fontSize(9).fillColor('#666').text('support@vivaaha.net', leftMargin, 135, { width: contentWidth, align: 'right' });
+      doc.fontSize(20).fillColor('#FFA726').text('Super Sathi', leftMargin, 110, { width: contentWidth, align: 'right' });
+      doc.fontSize(9).fillColor('#666').text('support@supersathi.com', leftMargin, 135, { width: contentWidth, align: 'right' });
 
       // Invoice Info
       doc.fontSize(11).fillColor('#000');
@@ -127,7 +127,7 @@ async function generateInvoicePDF(payment: any): Promise<string> {
       // Footer
       doc.fontSize(10).fillColor('#666');
       doc.text('Thank you for your business!', leftMargin, 720, { align: 'center', width: contentWidth });
-      doc.text('For any queries, contact us at support@vivaaha.net', leftMargin, 738, { align: 'center', width: contentWidth });
+      doc.text('For any queries, contact us at support@supersathi.com', leftMargin, 738, { align: 'center', width: contentWidth });
 
       doc.end();
     } catch (error) {
@@ -211,7 +211,7 @@ export async function getPaymentInvoice(req, res) {
     let cgstAmount = parseFloat(payment.cgst_amount) || 0;
     let sgstAmount = parseFloat(payment.sgst_amount) || 0;
     let gstType = payment.gst_type;
-    
+
     // If GST data is missing, calculate it
     if (totalGstAmount === 0 && totalAmount > 0) {
       baseAmount = totalAmount / 1.18;
@@ -219,11 +219,11 @@ export async function getPaymentInvoice(req, res) {
       igstAmount = totalGstAmount;
       gstType = 'IGST';
     }
-    
+
     const addonAmount = baseAmount - planPrice;
     const refundAmount = payment.payment_status === 'failed' ? Math.round(baseAmount * 0.83) : null;
     const invoiceNumber = payment.invoice_number || `INV-${new Date(payment.payment_date).getFullYear()}-${String(payment.id).padStart(6, '0')}`;
-    
+
     // Generate PDF if missing
     let pdfUrl = payment.invoice_pdf_url;
     if (!pdfUrl && payment.payment_status === 'paid') {
@@ -235,7 +235,7 @@ export async function getPaymentInvoice(req, res) {
           total_gst_amount: totalGstAmount
         };
         pdfUrl = await generateInvoicePDF(paymentData);
-        
+
         // Update database with PDF URL
         await query(`
           UPDATE payments SET invoice_pdf_url = ?, invoice_number = ? WHERE id = ?
@@ -244,16 +244,16 @@ export async function getPaymentInvoice(req, res) {
         console.error('PDF generation error:', pdfError);
       }
     }
-    
+
     const invoice = {
       invoice_number: invoiceNumber,
       invoice_url: payment.invoice_url || `${process.env.FRONTEND_URL || 'http://127.0.0.1:9000'}/api/payments/invoice-view/${invoiceNumber}`,
       invoice_pdf_url: pdfUrl,
-      date: new Date(payment.payment_date).toLocaleDateString('en-US', { 
-        year: 'numeric', month: 'long', day: 'numeric' 
+      date: new Date(payment.payment_date).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
       }),
-      status: payment.payment_status === 'failed' ? 'REFUNDED' : 
-              payment.payment_status === 'paid' ? 'COMPLETED' : 'PENDING',
+      status: payment.payment_status === 'failed' ? 'REFUNDED' :
+        payment.payment_status === 'paid' ? 'COMPLETED' : 'PENDING',
       customer: {
         name: `${payment.first_name || ''} ${payment.last_name || ''}`.trim(),
         email: payment.email,
@@ -318,7 +318,7 @@ export async function getInvoiceHtml(req, res) {
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Invoice - ${payment.invoice_number}</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f5f5;padding:20px}.invoice-container{max-width:800px;margin:0 auto;background:white;padding:60px;box-shadow:0 0 20px rgba(0,0,0,0.1)}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;gap:20px}.invoice-title{color:#2196F3;font-size:42px;font-weight:bold;letter-spacing:1px;white-space:nowrap;flex-shrink:0}.logo-section{text-align:right;flex-shrink:0;min-width:180px}.logo-icon{width:60px;height:60px;margin-bottom:10px}.logo-text{color:#FFA726;font-size:28px;font-weight:bold;letter-spacing:2px;white-space:nowrap}.support-email{color:#666;font-size:14px;margin-top:8px;white-space:nowrap}.invoice-info{margin-bottom:40px}.invoice-info p{margin:8px 0;font-size:15px;color:#333;word-break:break-word}.invoice-info strong{font-weight:600}.divider{border-top:2px solid #e0e0e0;margin:35px 0}.bill-to{margin-bottom:40px}.bill-to h3{font-size:18px;font-weight:600;margin-bottom:20px;color:#333}.bill-to p{margin:8px 0;color:#555;font-size:15px;word-break:break-word}.items-section{margin-bottom:40px}.items-table{width:100%;border-collapse:collapse;table-layout:fixed}.items-table thead tr{border-bottom:2px solid #e0e0e0}.items-table th{text-align:left;padding:15px 0;font-weight:600;font-size:16px;color:#333}.items-table th.amount-col{width:150px}.items-table td{padding:18px 0;font-size:15px;color:#555}.amount-col{text-align:right;white-space:nowrap}.total-row{border-top:2px solid #e0e0e0;font-weight:600;font-size:18px;color:#000}.total-row td{padding-top:20px}.payment-details{margin-bottom:40px;background:#f9f9f9;padding:25px;border-radius:4px}.payment-details h3{font-size:18px;font-weight:600;margin-bottom:15px;color:#333}.payment-details p{margin:10px 0;font-size:15px;color:#555;word-break:break-all}.footer{text-align:center;color:#666;font-size:14px;margin-top:50px;padding-top:30px;border-top:1px solid #e0e0e0;line-height:1.8}.print-btn{background:#2196F3;color:white;padding:12px 30px;border:none;border-radius:4px;cursor:pointer;margin-bottom:30px;font-size:15px;font-weight:500}@media print{.print-btn{display:none}body{background:white;padding:0}.invoice-container{box-shadow:none;padding:40px}}</style></head>
 <body><div class="invoice-container"><button class="print-btn" onclick="window.print()">Print Invoice</button>
-<div class="header"><div><div class="invoice-title">INVOICE</div></div><div class="logo-section"><svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="25" r="12" fill="#FFA726"/><circle cx="70" cy="25" r="12" fill="#FFA726"/><path d="M 50 45 Q 30 55 20 75 Q 30 85 50 95 Q 70 85 80 75 Q 70 55 50 45 Z" fill="#FFA726"/><path d="M 50 50 L 50 80" stroke="#FFF" stroke-width="3"/><path d="M 40 65 L 50 75 L 60 65" stroke="#FFF" stroke-width="3" fill="none"/></svg><div class="logo-text">VIVAAHA</div><div class="support-email">support@vivaaha.net</div></div></div>
+<div class="header"><div><div class="invoice-title">INVOICE</div></div><div class="logo-section"><svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="25" r="12" fill="#FFA726"/><circle cx="70" cy="25" r="12" fill="#FFA726"/><path d="M 50 45 Q 30 55 20 75 Q 30 85 50 95 Q 70 85 80 75 Q 70 55 50 45 Z" fill="#FFA726"/><path d="M 50 50 L 50 80" stroke="#FFF" stroke-width="3"/><path d="M 40 65 L 50 75 L 60 65" stroke="#FFF" stroke-width="3" fill="none"/></svg><div class="logo-text">Super Sathi</div><div class="support-email">support@supersathi.com</div></div></div>
 <div class="invoice-info"><p><strong>Invoice #:</strong> ${payment.invoice_number}</p><p><strong>Date:</strong> ${invoiceDate}</p></div><div class="divider"></div>
 <div class="bill-to"><h3>Bill To:</h3><p><strong>${customerName}</strong></p><p>${payment.email}</p><p>${payment.phone || ''}</p></div>
 <div class="items-section"><table class="items-table"><thead><tr><th>Description</th><th class="amount-col">Amount</th></tr></thead><tbody>
@@ -327,7 +327,7 @@ export async function getInvoiceHtml(req, res) {
 <tr class="total-row"><td><strong>Total Amount</strong></td><td class="amount-col"><strong>₹${totalAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</strong></td></tr></tbody></table></div>
 <div class="payment-details"><h3>Payment Details</h3><p><strong>Payment Method:</strong> ${(payment.payment_method || 'UPI').toUpperCase()}</p>
 <p><strong>Transaction ID:</strong> ${payment.payment_id || payment.order_id || 'undefined'}</p></div><div class="divider"></div>
-<div class="footer"><p><strong>Thank you for your business!</strong></p><p>For any queries, contact us at support@vivaaha.net</p></div></div></body></html>`;
+<div class="footer"><p><strong>Thank you for your business!</strong></p><p>For any queries, contact us at support@supersathi.com</p></div></div></body></html>`;
 
     res.send(html);
   } catch (error) {
@@ -342,9 +342,9 @@ export async function updatePaymentStatus(req, res) {
     const { payment_id, status, notes } = req.body;
 
     if (!payment_id || !status) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "payment_id and status are required" 
+      return res.status(400).json({
+        success: false,
+        message: "payment_id and status are required"
       });
     }
 
@@ -368,9 +368,9 @@ export async function getPaymentAnalytics(req, res) {
     const userId = req.user.user_id;
 
     if (!start_date || !end_date) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "start_date and end_date are required" 
+      return res.status(400).json({
+        success: false,
+        message: "start_date and end_date are required"
       });
     }
 
@@ -417,14 +417,14 @@ export async function getPaymentAnalytics(req, res) {
       LIMIT 5
     `, [userId, start_date, end_date]);
 
-      const analytics = {
+    const analytics = {
       summary: {
         total_payments: totalPayments.total_count || 0,
         total_amount: totalPayments.total_amount || 0,
         successful_payments: successfulPayments.success_count || 0,
         successful_amount: successfulPayments.success_amount || 0,
         failed_payments: failedPayments.failed_count || 0,
-        success_rate: totalPayments.total_count > 0 ? 
+        success_rate: totalPayments.total_count > 0 ?
           ((successfulPayments.success_count || 0) / totalPayments.total_count * 100).toFixed(2) : 0
       },
       monthly_breakdown: monthlyData,
@@ -450,9 +450,9 @@ export async function createOrder(req, res) {
     const { plan_id, addons = [] } = req.body;
 
     if (!plan_id) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "plan_id is required" 
+      return res.status(400).json({
+        success: false,
+        message: "plan_id is required"
       });
     }
 
@@ -528,12 +528,12 @@ export async function createOrder(req, res) {
     };
 
     const order = await razorpay.orders.create(options);
-    
+
     // Create payment order record
     await query(`
       INSERT INTO payment_orders (user_id, plan_id, order_id, amount, currency, receipt, notes)
       VALUES (?, ?, ?, ?, 'INR', ?, ?)
-    `, [userId, plan_id, order.id, totalAmount, receipt, JSON.stringify({addons: selectedAddons})]);
+    `, [userId, plan_id, order.id, totalAmount, receipt, JSON.stringify({ addons: selectedAddons })]);
 
     // Log payment creation
     await query(`
@@ -567,9 +567,9 @@ export async function verifyPayment(req, res) {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "All payment verification fields are required" 
+      return res.status(400).json({
+        success: false,
+        message: "All payment verification fields are required"
       });
     }
 
@@ -603,9 +603,9 @@ export async function verifyPayment(req, res) {
         UPDATE payment_orders SET status = 'failed' WHERE order_id = ?
       `, [razorpay_order_id]);
 
-      return res.status(400).json({ 
-        success: false, 
-        message: "Payment verification failed" 
+      return res.status(400).json({
+        success: false,
+        message: "Payment verification failed"
       });
     }
 
@@ -615,7 +615,7 @@ export async function verifyPayment(req, res) {
       payment = await razorpay.payments.fetch(razorpay_payment_id);
     } catch (razorpayError: any) {
       console.error("Razorpay API Error:", razorpayError);
-      
+
       // Log the error
       await query(`
         INSERT INTO payment_logs (user_id, order_id, payment_id, signature, amount, status, error_code, error_description)
@@ -626,9 +626,9 @@ export async function verifyPayment(req, res) {
         UPDATE payment_orders SET status = 'failed' WHERE order_id = ?
       `, [razorpay_order_id]);
 
-      return res.status(500).json({ 
-        success: false, 
-        message: "Payment verification failed due to gateway error" 
+      return res.status(500).json({
+        success: false,
+        message: "Payment verification failed due to gateway error"
       });
     }
 
@@ -742,7 +742,7 @@ export async function verifyPayment(req, res) {
 
       // 8. Generate invoice details and update payment record within transaction
       invoiceNumber = `INV-${new Date().getFullYear()}-${String(paymentInsertId).padStart(6, '0')}`;
-      invoiceUrl = `${process.env.FRONTEND_URL || 'https://vivaaha.net'}/invoice/${invoiceNumber}`;
+      invoiceUrl = `${process.env.FRONTEND_URL || 'https://staging.supersathi.com'}/invoice/${invoiceNumber}`;
 
       await queryConn(`
         UPDATE payments SET invoice_number = ?, invoice_url = ? WHERE id = ?
@@ -822,8 +822,8 @@ export async function verifyPayment(req, res) {
       console.error("Invoice PDF generation error (subscription already active):", pdfErr);
     }
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "Payment verified and subscription activated successfully",
       data: {
         payment_id: razorpay_payment_id,
@@ -930,10 +930,10 @@ export async function getPaymentHistory(req, res) {
       const totalAmount = parseFloat(payment.amount);
       // Use base_amount from payments table (stored at payment time) — NOT current sp.price
       const planPrice = parseFloat(payment.base_amount || payment.amount) || parseFloat(payment.plan_price) || 0;
-      
+
       // Calculate base amount and GST from database or reverse calculate
       let baseAmount, totalGst, cgst, sgst, igst, gstType;
-      
+
       if (payment.base_amount && payment.total_gst_amount) {
         baseAmount = parseFloat(payment.base_amount);
         totalGst = parseFloat(payment.total_gst_amount);
@@ -950,10 +950,10 @@ export async function getPaymentHistory(req, res) {
         sgst = 0;
         gstType = 'IGST';
       }
-      
+
       // Calculate addon amount
       const addonAmount = baseAmount - planPrice;
-      
+
       return {
         id: payment.id,
         plan_name: payment.plan_name,
@@ -1022,9 +1022,9 @@ export async function cancelOrder(req, res) {
     const { order_id } = req.body;
 
     if (!order_id) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Order ID is required" 
+      return res.status(400).json({
+        success: false,
+        message: "Order ID is required"
       });
     }
 
@@ -1090,9 +1090,9 @@ export async function handlePaymentFailure(req, res) {
     const { razorpay_order_id, error_code, error_description } = req.body;
 
     if (!razorpay_order_id) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Order ID is required" 
+      return res.status(400).json({
+        success: false,
+        message: "Order ID is required"
       });
     }
 
@@ -1125,9 +1125,9 @@ export async function handlePaymentFailure(req, res) {
       VALUES (?, ?, 'created', 'failed', 'Subscription creation failed due to payment failure')
     `, [userId, paymentOrder.plan_id]);
 
-    res.json({ 
-      success: true, 
-      message: "Payment failure recorded" 
+    res.json({
+      success: true,
+      message: "Payment failure recorded"
     });
   } catch (error) {
     console.error("Handle Payment Failure Error:", error);
@@ -1140,7 +1140,7 @@ export async function handleWebhook(req, res) {
   try {
     const webhookSignature = req.headers['x-razorpay-signature'];
     const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-    
+
     if (webhookSecret) {
       const expectedSignature = crypto
         .createHmac('sha256', webhookSecret)
@@ -1153,7 +1153,7 @@ export async function handleWebhook(req, res) {
     }
 
     const { event, payload } = req.body;
-    
+
     switch (event) {
       case 'payment.captured':
         await handlePaymentCaptured(payload.payment.entity);
@@ -1178,7 +1178,7 @@ export async function handleWebhook(req, res) {
 async function handlePaymentCaptured(payment) {
   try {
     const orderId = payment.order_id;
-    
+
     // Get payment order
     const [paymentOrder] = await query(`
       SELECT * FROM payment_orders WHERE order_id = ?
@@ -1200,7 +1200,7 @@ async function handlePaymentCaptured(payment) {
 async function handlePaymentFailedWebhook(payment) {
   try {
     const orderId = payment.order_id;
-    
+
     // Get payment order
     const [paymentOrder] = await query(`
       SELECT * FROM payment_orders WHERE order_id = ?
@@ -1226,7 +1226,7 @@ async function handlePaymentFailedWebhook(payment) {
 async function handleOrderPaid(order) {
   try {
     const orderId = order.id;
-    
+
     // Get payment order
     const [paymentOrder] = await query(`
       SELECT * FROM payment_orders WHERE order_id = ?
@@ -1359,7 +1359,7 @@ export async function processRefund(req, res) {
         });
       } catch (razorpayError: any) {
         console.error("Razorpay Refund Error:", razorpayError);
-        
+
         await query(`
           UPDATE refund_requests 
           SET refund_status = 'rejected', 

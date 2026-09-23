@@ -266,8 +266,8 @@ async function updateCeoContent(req, res) {
         INSERT INTO ceo_content (ceo_name, ceo_title, ceo_message, social_links)
         VALUES (?, ?, ?, ?)
       `, [
-                ceo_name || 'Anupam Mittal',
-                ceo_title || 'Founder, Vivaaha.com',
+                ceo_name || '',
+                ceo_title || 'Founder, supersathi.com',
                 ceo_message,
                 social_links ? JSON.stringify(social_links) : null
             ]);
@@ -304,8 +304,8 @@ async function updateCeoContentPublic(req, res) {
         INSERT INTO ceo_content (ceo_name, ceo_title, ceo_message, social_links)
         VALUES (?, ?, ?, ?)
       `, [
-                ceo_name || 'Anupam Mittal',
-                ceo_title || 'Founder, Vivaaha.com',
+                ceo_name || '',
+                ceo_title || 'Founder, supersathi.com',
                 ceo_message,
                 social_links ? JSON.stringify(social_links) : null
             ]);

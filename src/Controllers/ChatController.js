@@ -20,7 +20,7 @@ const s3Client = new client_s3_1.S3Client({
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
 });
-const BUCKET_NAME = process.env.AWS_BUCKET_NAME || "vivaaha-s3";
+const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 const CHAT_PUSH_LOG_PREFIX = '[ChatPush]';
 const CONNECTION_ENDED_MESSAGE = 'This connection has ended. You can no longer send messages to this user.';
 // Helper function to format file size

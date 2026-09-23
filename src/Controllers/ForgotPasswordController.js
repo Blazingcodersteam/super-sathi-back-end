@@ -43,7 +43,7 @@ async function sendOTP(req, res) {
         // Send OTP via email if email is provided
         if (isEmail) {
             await EmailService_1.EmailService.sendTemplateEmail('password_reset', email, { user_name: user.first_name || email, otp }, {
-                fallbackSubject: 'Password Reset OTP - Vivaaha',
+                fallbackSubject: 'Password Reset OTP - Super Sathi',
                 fallbackHtml: `<div style="font-family:Arial,sans-serif;padding:20px"><h2>Password Reset OTP</h2><p>Your OTP for password reset is:</p><h1 style="color:#4CAF50;font-size:32px;letter-spacing:5px">${otp}</h1><p>This OTP will expire in 10 minutes.</p><p>If you didn't request this, please ignore this email.</p></div>`,
             });
         }

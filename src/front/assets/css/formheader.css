@@ -1,0 +1,146 @@
+.form-header.header-wrap .header-bottom .container {
+    max-width: 1000px;
+}
+
+.signup-wrap {
+    margin: auto;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    max-width: 600px;
+    padding: 15px;
+    padding-top: 11pc;
+    padding-bottom: 4pc;
+}
+
+.sign-up {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    padding: 40px;
+}
+
+.form-section {
+    background: var(--secondary-color) !important;
+}
+
+.form-footer {
+    padding-top: 40px;
+    padding-bottom: 20px;
+    background: #fff !important;
+}
+
+.form-footer .footer-logo img {
+    max-height: 100px;
+}
+
+.form-footer .d-flex {
+    width: 100%;
+    gap: 10px;
+}
+
+.form-footer .logo-div {
+    width: 30%;
+}
+
+.form-footer .subscribe-div {
+    width: 30%;
+}
+
+.form-footer .footer-menu {
+    display: flex;
+    gap: 10px;
+    flex-wrap:wrap;
+}
+
+.form-footer .footer-menu li a {
+    font-size: 16px;
+    line-height: 26px;
+    color: #54595F;
+}
+
+.form-footer .footer-widget img {
+    max-height: 100px;
+}
+
+.form-footer .footer-border {
+    border-top: 2px solid #E6E8EB;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.form-footer.footer-wrap .footer-widget {
+    margin-bottom: 0;
+}
+
+.form-footer .footer-menu li a:hover {
+    color: var(--primary-color);
+}
+
+@media screen and (max-width:1199px) {
+    .form-footer .logo-div {
+        width: 50%;
+    }
+
+    .form-footer .subscribe-div {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .form-footer .d-flex {
+        flex-direction: column;
+    }
+
+    .form-footer .logo-div,
+    .form-footer .subscribe-div {
+        width: 100%;
+        text-align: center;
+    }
+
+    .form-footer .footer-widget p {
+        margin-bottom: 0;
+    }
+
+    .form-footer .footer-menu {
+        justify-content: center;
+    }
+
+    .form-footer .footer-text {
+        text-align: center !important;
+    }
+}
+
+/* .signup-wrap .login-form-wrap .login-form .form-group input {
+    border: 1px solid #E6E8EB;
+} */
+/* .sign-up .form-group .MuiInputBase-root{
+    padding: 0;
+} */
+.sign-up .form-group .MuiInputAdornment-root {
+    background: transparent;
+    border: none;
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 0;
+    border: 1px solid #E6E8EB !important;
+    max-height: 45px;
+}
+
+.from-logo img {
+    max-height: 75px;
+}
+
+.btn-link-text {
+    border: none;
+    background: transparent;
+    color: var(--primary-color);
+}
+.login-form-wrap{
+    min-width: 500px;
+}
+@media (max-width:600px) {
+   .login-form-wrap{
+    min-width: unset;
+} 
+}

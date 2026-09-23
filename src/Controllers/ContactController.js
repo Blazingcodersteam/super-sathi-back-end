@@ -73,9 +73,9 @@ async function submitContactForm(req, res) {
                     recipientName: full_name,
                     templateKey: "contact_form_user",
                     variables,
-                    fallbackSubject: 'Thank you for contacting Vivaaha',
+                    fallbackSubject: 'Thank you for contacting Super Sathi',
                     fallbackBody: `Dear ${full_name}, we have received your message and will get back to you within 24-48 hours.`,
-                    fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h3>Thank you for contacting us!</h3><p>Dear ${full_name},</p><p>We have received your message and will get back to you within 24-48 hours.</p><p><strong>Your message:</strong></p><p>${message}</p><hr><p>Best regards,<br>Vivaaha Team</p></div>`,
+                    fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h3>Thank you for contacting us!</h3><p>Dear ${full_name},</p><p>We have received your message and will get back to you within 24-48 hours.</p><p><strong>Your message:</strong></p><p>${message}</p><hr><p>Best regards,<br>Super Sathi Team</p></div>`,
                     meta: { event: "contact_form_user", connectionId: result.insertId },
                 },
             });
@@ -226,7 +226,7 @@ async function sendAdminReply(req, res) {
         // Send reply email
         await EmailService_1.EmailService.sendTemplateEmail('contact_reply', contact.email, { user_name: contact.full_name, subject: contact.subject, reply_message: reply_message.replace(/\n/g, '<br>') }, {
             fallbackSubject: `Re: ${contact.subject}`,
-            fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h3>Reply from Vivaaha Team</h3><p>Dear ${contact.full_name},</p><p>Thank you for contacting us. Here is our response:</p><div style="background:#f8f9fa;padding:15px;border-left:4px solid #d63384;margin:20px 0">${reply_message.replace(/\n/g, '<br>')}</div><p>If you have further questions, please contact us.</p><p>Best regards,<br>Vivaaha Team</p></div>`,
+            fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h3>Reply from Super Sathi Team</h3><p>Dear ${contact.full_name},</p><p>Thank you for contacting us. Here is our response:</p><div style="background:#f8f9fa;padding:15px;border-left:4px solid #d63384;margin:20px 0">${reply_message.replace(/\n/g, '<br>')}</div><p>If you have further questions, please contact us.</p><p>Best regards,<br>Super Sathi Team</p></div>`,
         });
         // Get admin info from token
         const adminId = ((_a = req.admin) === null || _a === void 0 ? void 0 : _a.user_id) || null;

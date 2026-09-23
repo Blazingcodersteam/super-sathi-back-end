@@ -69,9 +69,9 @@ async function submitSuccessStory(req, res) {
                     recipientName: user_name,
                     templateKey: "success_story",
                     variables: { user_name, partner_name },
-                    fallbackSubject: 'Thank You for Sharing Your Success Story - Vivaaha Matrimony',
+                    fallbackSubject: 'Thank You for Sharing Your Success Story - Super Sathi Matrimony',
                     fallbackBody: `Dear ${user_name}, we are delighted to receive your success story with ${partner_name}. Our team will review your story within 2-3 business days.`,
-                    fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px"><h1 style="color:#d4af37">Thank You!</h1><p>Dear ${user_name},</p><p>We are delighted to receive your beautiful success story with ${partner_name}!</p><p>Our team will review your story within 2-3 business days. Once approved, it will be featured on our Success Stories page.</p><p>With warm regards,<br><strong>The Vivaaha Matrimony Team</strong></p></div>`,
+                    fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px"><h1 style="color:#d4af37">Thank You!</h1><p>Dear ${user_name},</p><p>We are delighted to receive your beautiful success story with ${partner_name}!</p><p>Our team will review your story within 2-3 business days. Once approved, it will be featured on our Success Stories page.</p><p>With warm regards,<br><strong>The Super Sathi Matrimony Team</strong></p></div>`,
                     meta: { event: "success_story", connectionId: result.insertId },
                 },
             });

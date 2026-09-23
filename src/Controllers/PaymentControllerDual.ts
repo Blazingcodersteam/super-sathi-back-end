@@ -63,7 +63,7 @@ async function generateInvoicePDF(payment: any): Promise<string> {
       // Header - INVOICE (Blue)
       doc.fontSize(36).fillColor('#2196F3').text('INVOICE', leftMargin, 60, { width: 200 });
 
-      // Right side - Logo and VIVAAHA (right-aligned within content area)
+      // Right side - Logo and Super Sathi (right-aligned within content area)
       try {
         const logoPath = path.resolve(process.cwd(), 'src/logo.png');
         if (fs.existsSync(logoPath)) {
@@ -72,8 +72,8 @@ async function generateInvoicePDF(payment: any): Promise<string> {
       } catch (err) {
         console.log('Logo not found, skipping');
       }
-      doc.fontSize(20).fillColor('#FFA726').text('VIVAAHA', leftMargin, 110, { width: contentWidth, align: 'right' });
-      doc.fontSize(9).fillColor('#666').text('support@vivaaha.net', leftMargin, 135, { width: contentWidth, align: 'right' });
+      doc.fontSize(20).fillColor('#FFA726').text('Super Sathi', leftMargin, 110, { width: contentWidth, align: 'right' });
+      doc.fontSize(9).fillColor('#666').text('support@supersathi.com', leftMargin, 135, { width: contentWidth, align: 'right' });
 
       // Invoice Info
       doc.fontSize(11).fillColor('#000');
@@ -127,7 +127,7 @@ async function generateInvoicePDF(payment: any): Promise<string> {
       // Footer
       doc.fontSize(10).fillColor('#666');
       doc.text('Thank you for your business!', leftMargin, 720, { align: 'center', width: contentWidth });
-      doc.text('For any queries, contact us at support@vivaaha.net', leftMargin, 738, { align: 'center', width: contentWidth });
+      doc.text('For any queries, contact us at support@supersathi.com', leftMargin, 738, { align: 'center', width: contentWidth });
       doc.end();
     } catch (error) {
       reject(error);
@@ -258,9 +258,9 @@ export async function createOrder(req, res) {
     const { plan_id, addons = [], payment_gateway = 'razorpay' } = req.body;
 
     if (!plan_id) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "plan_id is required" 
+      return res.status(400).json({
+        success: false,
+        message: "plan_id is required"
       });
     }
 
@@ -387,11 +387,11 @@ async function createRazorpayOrder(userId, planId, plan, gstCalculation, selecte
   };
 
   const order = await razorpay.orders.create(options);
-  
+
   await query(`
     INSERT INTO payment_orders (user_id, plan_id, order_id, amount, base_amount, cgst_amount, sgst_amount, igst_amount, gst_type, total_gst_amount, currency, receipt, notes, payment_gateway)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'INR', ?, ?, 'razorpay')
-  `, [userId, planId, order.id, gstCalculation.totalAmount, gstCalculation.baseAmount, gstCalculation.cgstAmount, gstCalculation.sgstAmount, gstCalculation.igstAmount, gstCalculation.gstType, gstCalculation.totalGstAmount, receipt, JSON.stringify({addons: selectedAddons})]);
+  `, [userId, planId, order.id, gstCalculation.totalAmount, gstCalculation.baseAmount, gstCalculation.cgstAmount, gstCalculation.sgstAmount, gstCalculation.igstAmount, gstCalculation.gstType, gstCalculation.totalGstAmount, receipt, JSON.stringify({ addons: selectedAddons })]);
 
   await query(`
     INSERT INTO payment_logs (user_id, order_id, amount, currency, status, payment_gateway)
@@ -423,7 +423,7 @@ async function createCCAvenueOrder(userId, planId, plan, gstCalculation, selecte
   await query(`
     INSERT INTO payment_orders (user_id, plan_id, order_id, ccavenue_order_id, amount, base_amount, cgst_amount, sgst_amount, igst_amount, gst_type, total_gst_amount, currency, receipt, notes, payment_gateway)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'INR', ?, ?, 'ccavenue')
-  `, [userId, planId, orderId, orderId, gstCalculation.totalAmount, gstCalculation.baseAmount, gstCalculation.cgstAmount, gstCalculation.sgstAmount, gstCalculation.igstAmount, gstCalculation.gstType, gstCalculation.totalGstAmount, receipt, JSON.stringify({addons: selectedAddons})]);
+  `, [userId, planId, orderId, orderId, gstCalculation.totalAmount, gstCalculation.baseAmount, gstCalculation.cgstAmount, gstCalculation.sgstAmount, gstCalculation.igstAmount, gstCalculation.gstType, gstCalculation.totalGstAmount, receipt, JSON.stringify({ addons: selectedAddons })]);
 
   await query(`
     INSERT INTO payment_logs (user_id, order_id, amount, currency, status, payment_gateway)
@@ -492,7 +492,7 @@ export async function handleCCAvenueCallback(req, res) {
     console.log('CCAvenue Callback received');
     console.log('Request body:', req.body);
     console.log('Request headers:', req.headers);
-    
+
     const { encResp } = req.body;
 
     if (!encResp) {
@@ -505,7 +505,7 @@ export async function handleCCAvenueCallback(req, res) {
 
     const decryptedData = CCAvenue.decryptResponse(encResp);
     console.log('Decrypted CCAvenue data:', decryptedData);
-    
+
     const orderId = decryptedData.order_id;
     const orderStatus = decryptedData.order_status;
     const trackingId = decryptedData.tracking_id;
@@ -576,7 +576,7 @@ export async function handleCCAvenueCallback(req, res) {
 
         // 4. Generate invoice number and update payment record
         invoiceNumber = `INV-${new Date().getFullYear()}-${String(paymentInsertId).padStart(6, '0')}`;
-        invoiceUrl = `${process.env.FRONTEND_URL || 'https://vivaaha.net'}/api/payments/invoice-view/${invoiceNumber}`;
+        invoiceUrl = `${process.env.FRONTEND_URL || 'https://staging.supersathi.com'}/api/payments/invoice-view/${invoiceNumber}`;
 
         await queryConn(`
           UPDATE payments SET invoice_number = ?, invoice_url = ? WHERE id = ?
@@ -584,7 +584,7 @@ export async function handleCCAvenueCallback(req, res) {
 
         // 5. Get plan details and create subscription
         const [plan] = await queryConn(`SELECT * FROM subscription_plans WHERE id = ?`, [paymentOrder.plan_id]);
-        
+
         if (plan) {
           const startDate = new Date();
           const endDate = new Date();
@@ -672,7 +672,7 @@ export async function handleCCAvenueCallback(req, res) {
           console.error("Failed to log CCAvenue reconciliation alert:", logErr);
         }
 
-        return res.redirect(`https://vivaaha.net/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent('Payment received but activation failed. Support has been notified for reconciliation.')}`);
+        return res.redirect(`https://staging.supersathi.com/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent('Payment received but activation failed. Support has been notified for reconciliation.')}`);
       }
 
       // Post-commit PDF Generation (does not block subscription activation)
@@ -698,7 +698,7 @@ export async function handleCCAvenueCallback(req, res) {
         console.error("Invoice PDF generation error (CCAvenue subscription already active):", pdfErr);
       }
 
-      res.redirect(`https://vivaaha.net/payment/success?order_id=${orderId}&tracking_id=${trackingId}&amount=${amount}&status=success&invoice_number=${invoiceNumber}&invoice_url=${encodeURIComponent(invoiceUrl)}`);
+      res.redirect(`https://staging.supersathi.com/payment/success?order_id=${orderId}&tracking_id=${trackingId}&amount=${amount}&status=success&invoice_number=${invoiceNumber}&invoice_url=${encodeURIComponent(invoiceUrl)}`);
     } else {
       // Payment failed
       await query(`
@@ -710,7 +710,7 @@ export async function handleCCAvenueCallback(req, res) {
         UPDATE payment_orders SET status = 'failed', updated_at = CURRENT_TIMESTAMP WHERE ccavenue_order_id = ?
       `, [orderId]);
 
-      res.redirect(`https://vivaaha.net/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent(decryptedData.failure_message || 'Payment failed')}`);
+      res.redirect(`https://staging.supersathi.com/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent(decryptedData.failure_message || 'Payment failed')}`);
     }
   } catch (error) {
     console.error("CCAvenue Callback Error:", error);
@@ -748,7 +748,7 @@ export async function handleCCAvenueCancel(req, res) {
       FROM payment_orders WHERE ccavenue_order_id = ?
     `, [orderId]);
 
-    res.redirect(`https://vivaaha.net/payment/cancelled?order_id=${orderId}&status=cancelled`);
+    res.redirect(`https://staging.supersathi.com/payment/cancelled?order_id=${orderId}&status=cancelled`);
   } catch (error) {
     console.error("CCAvenue Cancel Error:", error);
     res.status(500).json({ success: false, message: "Server error" });

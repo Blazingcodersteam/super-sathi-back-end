@@ -177,8 +177,12 @@ export async function getTodayMatches(req, res) {
         const [connectStatus] = await query(`
           SELECT status FROM connect_now_requests
           WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-          ORDER BY created_at DESC LIMIT 1
-        `, [userId, match.id, match.id, userId]);
+          ORDER BY
+            CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+            COALESCE(updated_at, created_at) DESC,
+            id DESC
+          LIMIT 1
+        `, [userId, match.id, match.id, userId, userId]);
 
         match.match_actions = allActions;
         match.connect_status = connectStatus?.status || null;
@@ -334,8 +338,12 @@ export async function getTodayMatches(req, res) {
         const [connectStatus] = await query(`
           SELECT status FROM connect_now_requests
           WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-          ORDER BY created_at DESC LIMIT 1
-        `, [userId, match.id, match.id, userId]);
+          ORDER BY
+            CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+            COALESCE(updated_at, created_at) DESC,
+            id DESC
+          LIMIT 1
+        `, [userId, match.id, match.id, userId, userId]);
 
         match.match_actions = allActions;
         match.connect_status = connectStatus?.status || null;
@@ -538,8 +546,12 @@ export async function getMatchProfile(req, res) {
     const [connectStatus] = await query(`
       SELECT status FROM connect_now_requests
       WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-      ORDER BY created_at DESC LIMIT 1
-    `, [userId, matchId, matchId, userId]);
+      ORDER BY
+        CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+        COALESCE(updated_at, created_at) DESC,
+        id DESC
+      LIMIT 1
+    `, [userId, matchId, matchId, userId, userId]);
 
     // Get photo request status (sent by current user to this profile)
     const [photoRequestRecord] = await query(`

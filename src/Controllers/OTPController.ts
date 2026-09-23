@@ -45,8 +45,8 @@
 //         email_id,
 //         { user_name: email_id, otp },
 //         {
-//           fallbackSubject: 'Your Login OTP - Vivaaha',
-//           fallbackHtml: `<div style="font-family:Arial,sans-serif;padding:20px;max-width:600px;margin:0 auto"><h2 style="color:#4CAF50">Vivaaha Login OTP</h2><p>Your One-Time Password (OTP) for login is:</p><div style="background-color:#f5f5f5;padding:15px;text-align:center;margin:20px 0"><h1 style="color:#4CAF50;font-size:32px;letter-spacing:5px;margin:0">${otp}</h1></div><p>This OTP is valid for <strong>5 minutes</strong> only.</p><p>If you didn't request this OTP, please ignore this email.</p></div>`,
+//           fallbackSubject: 'Your Login OTP - Super Sathi',
+//           fallbackHtml: `<div style="font-family:Arial,sans-serif;padding:20px;max-width:600px;margin:0 auto"><h2 style="color:#4CAF50">Super Sathi Login OTP</h2><p>Your One-Time Password (OTP) for login is:</p><div style="background-color:#f5f5f5;padding:15px;text-align:center;margin:20px 0"><h1 style="color:#4CAF50;font-size:32px;letter-spacing:5px;margin:0">${otp}</h1></div><p>This OTP is valid for <strong>5 minutes</strong> only.</p><p>If you didn't request this OTP, please ignore this email.</p></div>`,
 //         }
 //       );
 //       console.log(`✅ SUCCESS: OTP email sent to ${email_id}`);
@@ -185,7 +185,7 @@ export async function sendOtp(req, res) {
         .status(200)
         .json({ success: false, message: "Phone number already registered" });
     }
-    
+
     // 6-digit OTP (requires otp_verification.otp_code to be varchar(6) —
     // see migrations/widen_otp_code_to_6.sql).
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -206,17 +206,17 @@ export async function sendOtp(req, res) {
     const insertedOtpId = otpInsertResult?.insertId;
     const [insertedOtp] = insertedOtpId
       ? await query(
-          `SELECT id, user_id, otp_type, contact_info, expires_at, created_at
+        `SELECT id, user_id, otp_type, contact_info, expires_at, created_at
              FROM otp_verification WHERE id = ? LIMIT 1`,
-          [insertedOtpId]
-        )
+        [insertedOtpId]
+      )
       : await query(
-          `SELECT id, user_id, otp_type, contact_info, expires_at, created_at
+        `SELECT id, user_id, otp_type, contact_info, expires_at, created_at
              FROM otp_verification
             WHERE contact_info = ? AND otp_code = ? AND otp_type = 'phone'
             ORDER BY created_at DESC LIMIT 1`,
-          [phone, otp]
-        );
+        [phone, otp]
+      );
 
     console.log("[sendOtp] OTP insert result", {
       insertId: insertedOtpId,

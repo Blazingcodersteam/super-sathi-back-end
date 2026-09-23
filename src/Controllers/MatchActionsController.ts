@@ -48,14 +48,14 @@ async function getParentFilter(userId: number): Promise<string> {
   return profile?.profile_created_by === 'parent' ? `AND up.profile_created_by = 'parent'` : '';
 }
 
-// Generate Vivaaha Unique ID
+// Generate Super Sathi Unique ID
 function generateVivahaId(): string {
   const prefix = "SS";
   const randomNumber = Math.floor(10000000 + Math.random() * 90000000);
   return `${prefix}${randomNumber}`;
 }
 
-// Generate unique Vivaaha ID
+// Generate unique Super Sathi ID
 export async function generateUniqueVivahaId(): Promise<string> {
   let vivahaId: string;
   let attempts = 0;
@@ -83,7 +83,7 @@ export async function updateDisplayPreference(req, res) {
 
     res.json({
       success: true,
-      message: `Display preference updated to show ${show_vivaaha_id ? 'Vivaaha ID' : 'Name'}`
+      message: `Display preference updated to show ${show_vivaaha_id ? 'Super Sathi ID' : 'Name'}`
     });
   } catch (error) {
     console.error("Update Display Preference Error:", error);
@@ -217,7 +217,7 @@ export async function unblockUser(req, res) {
       "DELETE FROM user_actions WHERE user_id = ? AND target_user_id = ? AND action_type_id = 3",
       [userId, targetId]
     );
-     // Sync privacy_settings.block_users JSON array
+    // Sync privacy_settings.block_users JSON array
     const [existing] = await query(
       "SELECT block_users FROM privacy_settings WHERE user_id = ?", [userId]
     );
@@ -419,8 +419,12 @@ export async function getShortlistedProfiles(req, res) {
       const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
 
       const allActions = [...matchActions];
       if (reportAction) {
@@ -606,8 +610,12 @@ export async function getBlockedUsers(req, res) {
       const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
 
       const allActions = [...matchActions];
       if (reportAction) {
@@ -633,7 +641,7 @@ export async function getBlockedUsers(req, res) {
       WHERE user_id = ? AND action_type_id = 3
     `, [userId]);
 
-     // Do NOT apply privacy filter here â€” these are blocked users, we want to show their info
+    // Do NOT apply privacy filter here â€” these are blocked users, we want to show their info
     const validProfiles = enrichedProfiles.filter((p: any) => p !== null && p !== undefined);
     res.json({
       success: true,
@@ -991,8 +999,12 @@ export async function getRecentlyViewedMembers(req, res) {
       const [connectStatus] = await query(`
         SELECT status, created_at, message FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
 
       const allActions = [...matchActions];
       if (reportAction) {
@@ -1202,8 +1214,12 @@ export async function getWhoViewedMyProfile(req, res) {
       const [connectStatus] = await query(`
         SELECT status, created_at, message FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
 
       const allActions = [...matchActions];
       if (reportAction) {
@@ -1369,8 +1385,12 @@ export async function getIgnoredMembers(req, res) {
       const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
 
       const allActions = [...matchActions];
       if (reportAction) {
@@ -1865,8 +1885,12 @@ export async function getInitialMatches(req, res) {
       const [connectStatus] = await query(`
         SELECT status, created_at, message FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
 
       const [shortlistStatus] = await query(`
         SELECT created_at FROM user_actions
@@ -2451,8 +2475,12 @@ export async function getMyConnections(req, res) {
       const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
 
       return {
         connected_date: conn.connected_date,

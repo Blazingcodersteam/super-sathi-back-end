@@ -70,13 +70,13 @@ async function getParentFilter(userId) {
     const [profile] = await query(`SELECT profile_created_by FROM user_profiles WHERE user_id = ?`, [userId]);
     return (profile === null || profile === void 0 ? void 0 : profile.profile_created_by) === 'parent' ? `AND up.profile_created_by = 'parent'` : '';
 }
-// Generate Vivaaha Unique ID
+// Generate Super Sathi Unique ID
 function generateVivahaId() {
     const prefix = "SS";
     const randomNumber = Math.floor(10000000 + Math.random() * 90000000);
     return `${prefix}${randomNumber}`;
 }
-// Generate unique Vivaaha ID
+// Generate unique Super Sathi ID
 async function generateUniqueVivahaId() {
     let vivahaId;
     let attempts = 0;
@@ -97,7 +97,7 @@ async function updateDisplayPreference(req, res) {
         await query("UPDATE user_profiles SET show_vivaaha_id = ? WHERE user_id = ?", [show_vivaaha_id ? 1 : 0, userId]);
         res.json({
             success: true,
-            message: `Display preference updated to show ${show_vivaaha_id ? 'Vivaaha ID' : 'Name'}`
+            message: `Display preference updated to show ${show_vivaaha_id ? 'Super Sathi ID' : 'Name'}`
         });
     }
     catch (error) {
@@ -373,8 +373,12 @@ async function getShortlistedProfiles(req, res) {
             const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
             const allActions = [...matchActions];
             if (reportAction) {
                 allActions.push(reportAction);
@@ -534,8 +538,12 @@ async function getBlockedUsers(req, res) {
             const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
             const allActions = [...matchActions];
             if (reportAction) {
                 allActions.push(reportAction);
@@ -848,8 +856,12 @@ async function getRecentlyViewedMembers(req, res) {
             const [connectStatus] = await query(`
         SELECT status, created_at, message FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
             const allActions = [...matchActions];
             if (reportAction) {
                 allActions.push(reportAction);
@@ -1032,8 +1044,12 @@ async function getWhoViewedMyProfile(req, res) {
             const [connectStatus] = await query(`
         SELECT status, created_at, message FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
             const allActions = [...matchActions];
             if (reportAction) {
                 allActions.push(reportAction);
@@ -1174,8 +1190,12 @@ async function getIgnoredMembers(req, res) {
             const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
             const allActions = [...matchActions];
             if (reportAction) {
                 allActions.push(reportAction);
@@ -1602,8 +1622,12 @@ async function getInitialMatches(req, res) {
             const [connectStatus] = await query(`
         SELECT status, created_at, message FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
             const [shortlistStatus] = await query(`
         SELECT created_at FROM user_actions
         WHERE user_id = ? AND target_user_id = ? AND action_type_id = 1
@@ -2090,8 +2114,12 @@ async function getMyConnections(req, res) {
             const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profileId, profileId, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profileId, profileId, userId, userId]);
             return Object.assign(Object.assign({ connected_date: conn.connected_date, status: conn.status }, profile), { family: family || {}, astro: astro || {}, location: location || {}, hobbies: hobbies || [], photos: photos || [], connect_status: (connectStatus === null || connectStatus === void 0 ? void 0 : connectStatus.status) || null });
         }));
         const [{ total }] = await query(`

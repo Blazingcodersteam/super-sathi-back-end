@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Link of CSS files -->
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/flaticon.css">
+  <link rel="stylesheet" href="/assets/css/remixicon.css">
+  <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/assets/css/odometer.min.css">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/responsive.css">
+  <link rel="stylesheet" href="/assets/css/dark-theme.css">
+  <link rel="stylesheet" href="/assets/css/custom.css">
+  <link rel="stylesheet" href="/assets/css/custom_new.css">
+  <link rel="stylesheet" href="/assets/css/formheader.css">
+  <link rel="stylesheet" href="/assets/css/select2.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+    integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <title>Super Sathi - Trusted Matrimony Platform for Meaningful Matches</title>
+  <meta name="description" content="Super Sathi is a secure and verified matrimony platform in India helping individuals and families find genuine life partners with confidence, privacy, and cultural values." />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/image/logo/super-sathi-logo.png">
+  <link rel="shortcut icon" type="image/png" href="/assets/image/logo/super-sathi-logo.png">
+  <link rel="apple-touch-icon" href="/assets/image/logo/super-sathi-logo.png">
+
+  <!-- Web App Manifest -->
+  <!-- <link rel="manifest" href="assets/image/favicon/site.webmanifest"> -->
+  <!-- Google Analytics is now loaded dynamically from API via GoogleAnalyticsContext -->
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-T5PSVTH5');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Meta Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2361669010937200');
+    fbq('track', 'PageView');
+  </script>
+  <!-- End Meta Pixel Code -->
+  <script type="module" crossorigin src="/assets/index-CHB3Q7pT.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BoT7kB8c.css">
+</head>
+
+<body>
+   <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=2361669010937200&ev=PageView&noscript=1" /></noscript>
+  <div id="root"></div>
+  <!-- Link of JS files -->
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/form-validator.min.js"></script>
+  <script src="/assets/js/contact-form-script.js"></script>
+  <script src="/assets/js/aos.js"></script>
+  <script src="/assets/js/owl.carousel.min.js"></script>
+  <script src="/assets/js/jquery.appear.js"></script>
+  <script src="/assets/js/odometer.min.js"></script>
+  <script src="/assets/js/fslightbox.js"></script>
+  <script src="/assets/js/tweenmax.min.js"></script>
+  <script src="/assets/js/select2.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5PSVTH5" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <script>
+    $(document).ready(function () {
+      $('.searchable').select2({
+        placeholder: "Select",
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      // Responsive mmenu - run immediately
+      function handleMenuResize() {
+        if ($(window).width() <= 1199) {
+          $('.collapse.navbar-collapse').removeClass('collapse');
+        } else {
+          $('.navbar-collapse').addClass('collapse');
+        }
+      }
+
+      handleMenuResize(); // Run once at start
+      $(window).on('resize', handleMenuResize);
+
+      // Delegated click events (so they work even after content reload)
+      $(document).on('click', '.mobile-menu a', function () {
+        $('.main-menu-wrap').addClass('open');
+        $('.collapse.navbar-collapse').removeClass('collapse');
+      });
+
+      $(document).on('click', '.mobile_menu a', function () {
+        $(this).parent().toggleClass('open');
+        $('.main-menu-wrap').toggleClass('open');
+      });
+
+      $(document).on('click', '.menu-close', function () {
+        $('.main-menu-wrap').removeClass('open');
+      });
+
+      $(document).on('click', '.mobile-top-bar', function () {
+        $('.header-top').addClass('open');
+      });
+
+      $(document).on('click', '.close-header-top button', function () {
+        $('.header-top').removeClass('open');
+      });
+
+      // Offcanvas menu
+      var $offcanvasNav = $('.navbar-nav'),
+        $offcanvasNavSubMenu = $offcanvasNav.find('.dropdown-menu');
+
+      $offcanvasNavSubMenu.parent().prepend('<span class="menu-expand"><i class="ri-arrow-down-s-line"></i></span>');
+      $offcanvasNavSubMenu.slideUp();
+
+      $(document).on('click', '.navbar-nav li a, .navbar-nav li .menu-expand', function (e) {
+        var $this = $(this);
+        if (($this.attr('href') === '#' || $this.hasClass('menu-expand'))) {
+          e.preventDefault();
+          if ($this.siblings('ul:visible').length) {
+            $this.siblings('ul').slideUp('slow');
+          } else {
+            $this.closest('li').siblings('li').find('ul:visible').slideUp('slow');
+            $this.siblings('ul').slideDown('slow');
+          }
+        }
+        if ($this.is('a') || $this.is('span') || $this.hasClass('menu-expand')) {
+          $this.parent().toggleClass('menu-open');
+        } else if ($this.is('li') && $this.hasClass('dropdown-menu')) {
+          $this.toggleClass('menu-open');
+        }
+      });
+    });
+
+  </script>
+</body>
+
+</html>

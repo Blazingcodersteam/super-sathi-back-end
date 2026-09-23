@@ -113,8 +113,12 @@ async function getProfileDetails(userId, currentUserId) {
     const [connectStatus] = await query(`
     SELECT status FROM connect_now_requests 
     WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-    ORDER BY created_at DESC LIMIT 1
-  `, [currentUserId, userId, userId, currentUserId]);
+    ORDER BY
+      CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+      COALESCE(updated_at, created_at) DESC,
+      id DESC
+    LIMIT 1
+  `, [currentUserId, userId, userId, currentUserId, currentUserId]);
     // Get match actions
     const matchActions = await query(`
     SELECT ua.action_type_id, atm.action_name
@@ -1342,7 +1346,7 @@ async function getMatchesForInbox(req, res) {
         -- Connect request status (pending/declined/cancelled)
         (SELECT cnr.status FROM connect_now_requests cnr
          WHERE cnr.sender_id = ? AND cnr.receiver_id = u.id
-         ORDER BY cnr.created_at DESC LIMIT 1) as connect_status,
+         ORDER BY COALESCE(cnr.updated_at, cnr.created_at) DESC, cnr.id DESC LIMIT 1) as connect_status,
         -- Primary photo as both primary_photo and profile_picture so resolvePhotoUrl works
         (SELECT ph.photo_url FROM user_photos ph
          WHERE ph.user_id = u.id AND ph.is_primary = 1 LIMIT 1) as primary_photo,

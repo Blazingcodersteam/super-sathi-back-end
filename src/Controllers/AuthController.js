@@ -57,8 +57,8 @@ function generateOTP() {
 //         email,
 //         { user_name: 'User', otp },
 //         {
-//           fallbackSubject: 'Your Login OTP - Vivaaha',
-//           fallbackHtml: `<div style="font-family:Arial,sans-serif;padding:20px;max-width:600px;margin:0 auto"><h2 style="color:#4CAF50">Vivaaha Login OTP</h2><p>Dear User,</p><p>Your One-Time Password (OTP) for login is:</p><div style="background-color:#f5f5f5;padding:15px;text-align:center;margin:20px 0"><h1 style="color:#4CAF50;font-size:32px;letter-spacing:5px;margin:0">${otp}</h1></div><p>This OTP is valid for <strong>5 minutes</strong> only.</p><p>If you didn't request this OTP, please ignore this email.</p></div>`,
+//           fallbackSubject: 'Your Login OTP - Super Sathi',
+//           fallbackHtml: `<div style="font-family:Arial,sans-serif;padding:20px;max-width:600px;margin:0 auto"><h2 style="color:#4CAF50">Super Sathi Login OTP</h2><p>Dear User,</p><p>Your One-Time Password (OTP) for login is:</p><div style="background-color:#f5f5f5;padding:15px;text-align:center;margin:20px 0"><h1 style="color:#4CAF50;font-size:32px;letter-spacing:5px;margin:0">${otp}</h1></div><p>This OTP is valid for <strong>5 minutes</strong> only.</p><p>If you didn't request this OTP, please ignore this email.</p></div>`,
 //         }
 //       );
 //       console.log(`✅ SUCCESS: OTP email sent to ${email}`);
@@ -416,7 +416,7 @@ async function beforeOTP(req, res) {
         //     error: sms.error,
         //   });
         // }
-        // Generate unique Vivaaha ID (system identifier used across the app for lookups)
+        // Generate unique Super Sathi ID (system identifier used across the app for lookups)
         const vivahaUserId = await (0, MatchActionsController_1.generateUniqueVivahaId)();
         // Create the user record. Only phone + country_code_id are captured here;
         // every other column is left to its default / NULL (email, password, etc.).
@@ -489,7 +489,7 @@ async function afterotp(req, res) {
                 profile,
             });
         }
-        // Generate unique Vivaaha ID (system identifier used across the app for lookups)
+        // Generate unique Super Sathi ID (system identifier used across the app for lookups)
         const vivahaUserId = await (0, MatchActionsController_1.generateUniqueVivahaId)();
         // Create the user record. Only phone + country_code_id are captured here;
         // every other column is left to its default / NULL (email, password, etc.).

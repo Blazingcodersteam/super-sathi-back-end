@@ -16,7 +16,7 @@ const s3Client = new S3Client({
   },
 });
 
-const BUCKET_NAME = process.env.AWS_BUCKET_NAME || "vivaaha-s3";
+const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 const CHAT_PUSH_LOG_PREFIX = '[ChatPush]';
 const CONNECTION_ENDED_MESSAGE = 'This connection has ended. You can no longer send messages to this user.';
 
@@ -265,10 +265,10 @@ export async function getChatListOLD(req, res) {
         conv.profile_picture = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${conv.profile_picture}`;
       }
     });
-    
+
     // Sort by last_message_time descending
     allConversations.sort((a, b) => new Date(b.last_message_time).getTime() - new Date(a.last_message_time).getTime());
-    
+
     // Apply pagination
     const paginatedConversations = allConversations.slice(offset, offset + parseInt(limit));
 
@@ -413,10 +413,10 @@ export async function getChatList(req, res) {
         conv.profile_picture = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${conv.profile_picture}`;
       }
     });
-    
+
     // Sort by last_message_time descending
     allConversations.sort((a, b) => new Date(b.last_message_time).getTime() - new Date(a.last_message_time).getTime());
-    
+
     // Apply pagination
     const paginatedConversations = allConversations.slice(offset, offset + parseInt(limit));
 
@@ -614,13 +614,12 @@ export async function sendMessage(req, res) {
     const [general] = await query(
       `SELECT subscription_restrictions FROM general_settings
        LIMIT 1`);  //subscription_restrictions: 1, //1 is restrictions enable, 0 is restrictions disable
-    
-      console.log("Subscription Check:", { sub, general });
-     // 0 = Restrictions disabled
+
+    console.log("Subscription Check:", { sub, general });
+    // 0 = Restrictions disabled
     if (general && general.subscription_restrictions === 0) {
     }
-    else
-    {
+    else {
       if (!sub) {
         return res.status(403).json({
           success: false,
@@ -669,13 +668,13 @@ export async function sendMessage(req, res) {
     }
 
     let fileUrl = null;
-    
+
     // Handle file upload if present
     if (file) {
       const safeName = path.basename(file.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
       const fileExtension = path.extname(safeName).toLowerCase();
       const fileName = `chat-files/${userId}/${Date.now()}${fileExtension}`;
-      
+
       const uploadParams = {
         Bucket: BUCKET_NAME,
         Key: fileName,
@@ -751,7 +750,7 @@ export async function sendMessage(req, res) {
       io.to(`conv_${conversationId}`).emit('new_message', socketPayload);
       io.to(`user_${receiver_id}`).emit('new_message', socketPayload);
       console.log(`[Socket] Emitted message to conv_${conversationId} and user_${receiver_id}`);
-    } catch (_) {}
+    } catch (_) { }
 
     await sendOfflineChatPushNotification(parseInt(receiver_id), socketPayload);
 

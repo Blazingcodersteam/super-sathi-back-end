@@ -385,7 +385,7 @@ const handleCCAvenueRenewalCallback = async (req, res) => {
                             resolve();
                     });
                 });
-                const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+                const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
                 res.redirect(`${frontendUrl}/vendor/renewal/success?order_id=${orderId}&tracking_id=${trackingId}&status=success`);
             }
             catch (txnError) {
@@ -393,7 +393,7 @@ const handleCCAvenueRenewalCallback = async (req, res) => {
                     connection.rollback(() => resolve());
                 });
                 console.error(`[CRITICAL PAYMENT RECONCILIATION NEEDED] CCAvenue renewal payment was captured (OrderId: ${orderId}, TrackingId: ${trackingId}, Vendor: ${vendorId}), but DB transaction failed and was rolled back!`, txnError);
-                const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+                const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
                 res.redirect(`${frontendUrl}/vendor/renewal/failed?order_id=${orderId}&status=failed&message=${encodeURIComponent('Payment captured but renewal update failed. Support has been notified.')}`);
             }
         }
@@ -407,13 +407,13 @@ const handleCCAvenueRenewalCallback = async (req, res) => {
           updated_at = CURRENT_TIMESTAMP
         WHERE gateway_order_id = ? AND vendor_id = ?
       `, [decryptedData.failure_message || 'Payment failed', JSON.stringify(decryptedData), orderId, vendorId]);
-            const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+            const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
             res.redirect(`${frontendUrl}/vendor/renewal/failed?order_id=${orderId}&status=failed&message=${encodeURIComponent(decryptedData.failure_message || 'Payment failed')}`);
         }
     }
     catch (error) {
         console.error("CCAvenue Renewal Callback Error:", error);
-        const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+        const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
         res.redirect(`${frontendUrl}/vendor/renewal/failed?status=error&message=${encodeURIComponent('Server error occurred')}`);
     }
     finally {
@@ -429,7 +429,7 @@ const handleCCAvenueRenewalCancel = async (req, res) => {
         console.log('CCAvenue Renewal Cancel received');
         const { encResp } = req.body;
         if (!encResp) {
-            const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+            const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
             res.redirect(`${frontendUrl}/vendor/renewal/cancelled?status=cancelled&error=missing_data`);
             return;
         }
@@ -445,12 +445,12 @@ const handleCCAvenueRenewalCancel = async (req, res) => {
         updated_at = CURRENT_TIMESTAMP
       WHERE gateway_order_id = ? AND vendor_id = ?
     `, [JSON.stringify(decryptedData), orderId, vendorId]);
-        const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+        const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
         res.redirect(`${frontendUrl}/vendor/renewal/cancelled?order_id=${orderId}&status=cancelled`);
     }
     catch (error) {
         console.error("CCAvenue Renewal Cancel Error:", error);
-        const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+        const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
         res.redirect(`${frontendUrl}/vendor/renewal/cancelled?status=error&message=${encodeURIComponent('Server error occurred')}`);
     }
 };

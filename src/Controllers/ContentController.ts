@@ -32,7 +32,7 @@ export async function getWebsiteContent(req, res) {
 // Helper function to update single field
 async function updateSingleField(fieldName: string, value: string) {
   const [existing] = await query(`SELECT id FROM website_content LIMIT 1`);
-  
+
   if (existing) {
     await query(`
       UPDATE website_content SET
@@ -54,7 +54,7 @@ export async function updatePrivacyPolicy(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('privacy_policy', content);
     res.json({ success: true, message: "Privacy policy updated successfully" });
   } catch (error) {
@@ -70,7 +70,7 @@ export async function updateTermsConditions(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('terms_conditions', content);
     res.json({ success: true, message: "Terms & conditions updated successfully" });
   } catch (error) {
@@ -86,7 +86,7 @@ export async function updateRefundPolicy(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('refund_policy', content);
     res.json({ success: true, message: "Refund policy updated successfully" });
   } catch (error) {
@@ -102,7 +102,7 @@ export async function updateSafePolicy(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('safe_policy', content);
     res.json({ success: true, message: "Safe policy updated successfully" });
   } catch (error) {
@@ -118,7 +118,7 @@ export async function updateBeSafeOnline(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('be_safe_online', content);
     res.json({ success: true, message: "Be safe online content updated successfully" });
   } catch (error) {
@@ -134,7 +134,7 @@ export async function updateTitle(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('title', content);
     res.json({ success: true, message: "Title updated successfully" });
   } catch (error) {
@@ -150,7 +150,7 @@ export async function updateSubtitle(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('subtitle', content);
     res.json({ success: true, message: "Subtitle updated successfully" });
   } catch (error) {
@@ -166,7 +166,7 @@ export async function updateDescription(req, res) {
     if (!content) {
       return res.status(400).json({ success: false, message: "Content is required" });
     }
-    
+
     await updateSingleField('description', content);
     res.json({ success: true, message: "Description updated successfully" });
   } catch (error) {
@@ -179,7 +179,7 @@ export async function updateDescription(req, res) {
 export async function uploadHomepageBanner(req, res) {
   try {
     const files = req.files as Express.Multer.File[];
-    
+
     if (!files || files.length === 0) {
       return res.status(400).json({ success: false, message: "At least one banner image is required" });
     }
@@ -187,17 +187,17 @@ export async function uploadHomepageBanner(req, res) {
     const imageUrls = files.map(file => {
       const fileName = `banner_${Date.now()}_${file.originalname}`;
       const filePath = path.join('uploads/banners', fileName);
-      
+
       // Move file to permanent location
       fs.renameSync(file.path, filePath);
-      
+
       return `/uploads/banners/${fileName}`;
     });
 
     await updateSingleField('homepage_banner', JSON.stringify(imageUrls));
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: "Homepage banner images uploaded successfully",
       data: { imageUrls }
     });
@@ -211,17 +211,17 @@ export async function uploadHomepageBanner(req, res) {
 export async function uploadCeoImage(req, res) {
   try {
     const file = req.file;
-    
+
     if (!file) {
       return res.status(400).json({ success: false, message: "CEO image is required" });
     }
 
     const fileName = `ceo_${Date.now()}_${file.originalname}`;
     const filePath = path.join('uploads/ceo', fileName);
-    
+
     // Move file to permanent location
     fs.renameSync(file.path, filePath);
-    
+
     const imageUrl = `/uploads/ceo/${fileName}`;
 
     const [existing] = await query(`SELECT id FROM ceo_content LIMIT 1`);
@@ -239,8 +239,8 @@ export async function uploadCeoImage(req, res) {
       `, [imageUrl]);
     }
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "CEO image uploaded successfully",
       data: { imageUrl }
     });
@@ -281,8 +281,8 @@ export async function updateCeoContent(req, res) {
         INSERT INTO ceo_content (ceo_name, ceo_title, ceo_message, social_links)
         VALUES (?, ?, ?, ?)
       `, [
-        ceo_name || 'Anupam Mittal',
-        ceo_title || 'Founder, Vivaaha.com',
+        ceo_name || '',
+        ceo_title || 'Founder, supersathi.com',
         ceo_message,
         social_links ? JSON.stringify(social_links) : null
       ]);
@@ -326,8 +326,8 @@ export async function updateCeoContentPublic(req, res) {
         INSERT INTO ceo_content (ceo_name, ceo_title, ceo_message, social_links)
         VALUES (?, ?, ?, ?)
       `, [
-        ceo_name || 'Anupam Mittal',
-        ceo_title || 'Founder, Vivaaha.com',
+        ceo_name || '',
+        ceo_title || 'Founder, supersathi.com',
         ceo_message,
         social_links ? JSON.stringify(social_links) : null
       ]);

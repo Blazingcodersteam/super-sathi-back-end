@@ -21,7 +21,7 @@ async function sendMail(toAddress, subject, body) {
             },
         });
         const mailOptions = {
-            from: `"Vivaaha Matrimony" <${process.env.EMAIL_FROM}>`,
+            from: `"Super Sathi Matrimony" <${process.env.EMAIL_FROM}>`,
             to: toAddress,
             subject: subject,
             html: body,
@@ -36,7 +36,7 @@ async function sendMail(toAddress, subject, body) {
 }
 // Send call notification email
 async function sendCallNotificationEmail(toAddress, callDetails) {
-    const subject = `Incoming ${callDetails.call_type.charAt(0).toUpperCase() + callDetails.call_type.slice(1)} Call - Vivaaha Matrimony`;
+    const subject = `Incoming ${callDetails.call_type.charAt(0).toUpperCase() + callDetails.call_type.slice(1)} Call - Super Sathi Matrimony`;
     const body = `
     <!DOCTYPE html>
     <html>
@@ -65,16 +65,16 @@ async function sendCallNotificationEmail(toAddress, callDetails) {
                     <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
                 </div>
                 
-                <p>You have received an incoming ${callDetails.call_type} call from ${callDetails.caller_name}. Please open your Vivaaha app to accept or decline the call.</p>
+                <p>You have received an incoming ${callDetails.call_type} call from ${callDetails.caller_name}. Please open your Super Sathi app to accept or decline the call.</p>
                 
                 <div style="text-align: center; margin: 30px 0;">
-                    <p><strong>Open the Vivaaha app to respond to this call</strong></p>
+                    <p><strong>Open the Super Sathi app to respond to this call</strong></p>
                 </div>
                 
                 <p><strong>Note:</strong> This call is only available to users in your connections list for your safety and privacy.</p>
             </div>
             <div class="footer">
-                <p>This is an automated notification from Vivaaha Matrimony</p>
+                <p>This is an automated notification from Super Sathi Matrimony</p>
                 <p>If you did not expect this call, please contact our support team</p>
             </div>
         </div>

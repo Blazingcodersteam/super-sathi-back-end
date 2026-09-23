@@ -54,13 +54,13 @@ export class EmailService {
       // Fallback to .env if DB config is missing or incomplete
       if (!config) {
         config = {
-          smtp_host:       process.env.EMAIL_HOST       || 'smtp.gmail.com',
-          smtp_port:       process.env.EMAIL_PORT       || '587',
-          smtp_username:   process.env.EMAIL_USER       || '',
-          smtp_password:   process.env.EMAIL_PASSWORD   || '',
+          smtp_host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+          smtp_port: process.env.EMAIL_PORT || '587',
+          smtp_username: process.env.EMAIL_USER || '',
+          smtp_password: process.env.EMAIL_PASSWORD || '',
           smtp_encryption: process.env.EMAIL_ENCRYPTION || 'tls',
-          smtp_from_email: process.env.EMAIL_FROM       || process.env.EMAIL_USER || '',
-          smtp_from_name:  process.env.EMAIL_FROM_NAME  || 'Vivaaha Matrimony',
+          smtp_from_email: process.env.EMAIL_FROM || process.env.EMAIL_USER || '',
+          smtp_from_name: process.env.EMAIL_FROM_NAME || 'Super Sathi Matrimony',
         };
         console.log('📧 SMTP config loaded from .env fallback');
       }
@@ -142,15 +142,15 @@ export class EmailService {
     }
 
     const defaultVariables = {
-      sitename:    siteSettings.site_name    || process.env.SITE_NAME     || 'Vivaaha',
-      site_url:     process.env.FRONTEND_URL  || 'https://vivaaha.com',
-      site_logo:    siteSettings.site_logo    || process.env.SITE_LOGO_URL || 'https://vivaaha.net/admin/assets/logo-BrbBDGT7.png',
+      sitename: siteSettings.site_name || process.env.SITE_NAME || 'Super Sathi',
+      site_url: process.env.FRONTEND_URL || 'https://staging.supersathi.com',
+      site_logo: siteSettings.site_logo || process.env.SITE_LOGO_URL || 'https://staging.supersathi.com/admin/assets/logo-BrbBDGT7.png',
       color_code: siteSettings.primary_color || '#d63384',
       current_date: new Date().toLocaleDateString(),
       current_year: new Date().getFullYear(),
-      login_url:   process.env.FRONTEND_URL  || 'https://vivaaha.com/login',
-      vendor_login_url: process.env.VENDOR_LOGIN_URL || 'https://vivaaha.net/admin/vendor/login',
-      admin_url:   `${process.env.ADMIN_URL || 'https://vivaaha.net/admin/login'}`,
+      login_url: process.env.FRONTEND_URL || 'https://staging.supersathi.com/login',
+      vendor_login_url: process.env.VENDOR_LOGIN_URL || 'https://staging.supersathi.com/admin/vendor/login',
+      admin_url: `${process.env.ADMIN_URL || 'https://staging.supersathi.com/admin/login'}`,
     };
 
     const allVariables = { ...defaultVariables, ...variables };
@@ -217,10 +217,10 @@ export class EmailService {
         logConnectPerf(perf, "email-from-settings-db-query", fromSettingsStart);
         const dbConfig = settings[0];
         fromEmail = dbConfig?.smtp_from_email || process.env.EMAIL_FROM || process.env.EMAIL_USER || '';
-        fromName  = dbConfig?.smtp_from_name  || process.env.EMAIL_FROM_NAME || 'Vivaaha Matrimony';
+        fromName = dbConfig?.smtp_from_name || process.env.EMAIL_FROM_NAME || 'Super Sathi Matrimony';
       } catch (_) {
         fromEmail = process.env.EMAIL_FROM || process.env.EMAIL_USER || '';
-        fromName  = process.env.EMAIL_FROM_NAME || 'Vivaaha Matrimony';
+        fromName = process.env.EMAIL_FROM_NAME || 'Super Sathi Matrimony';
       }
 
       let subject: string;
@@ -230,13 +230,13 @@ export class EmailService {
       const renderStart = perf ? connectPerfNow() : 0;
       if (result.found && result.active) {
         // ── Admin has active template → use it
-        subject  = await this.replaceVariables(result.template.subject, variables);
+        subject = await this.replaceVariables(result.template.subject, variables);
         htmlBody = await this.replaceVariables(result.template.email_body_html, variables);
         textBody = await this.replaceVariables(result.template.email_body, variables);
         console.log(`📧 Using DB template [${templateKey}] for ${to}`);
       } else if (options.fallbackSubject && options.fallbackHtml) {
         // ── Not in DB → use hardcoded fallback
-        subject  = await this.replaceVariables(options.fallbackSubject, variables);
+        subject = await this.replaceVariables(options.fallbackSubject, variables);
         htmlBody = await this.replaceVariables(options.fallbackHtml, variables);
         textBody = options.fallbackText ? await this.replaceVariables(options.fallbackText, variables) : '';
         console.log(`📧 No DB template for [${templateKey}], using hardcoded fallback for ${to}`);
@@ -401,7 +401,7 @@ export class EmailService {
             </div>
             
             <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px;">
-              <p>Need help? Contact us at <a href="mailto:vendor-support@vivaaha.net" style="color: {{color_code}};">vendor-support@vivaaha.net</a></p>
+              <p>Need help? Contact us at <a href="mailto:support@supersathi.com" style="color: {{color_code}};">support@supersathi.com</a></p>
               <p>© {{current_year}} {{sitename}}. All rights reserved.</p>
             </div>
           </div>
@@ -497,7 +497,7 @@ export class EmailService {
             </div>
             
             <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px;">
-              <p>Need help? Contact us at <a href="mailto:support@vivaaha.net" style="color: {{color_code}};">support@vivaaha.net</a></p>
+              <p>Need help? Contact us at <a href="mailto:support@supersathi.com" style="color: {{color_code}};">support@supersathi.com</a></p>
               <p>© {{current_year}} {{sitename}}. All rights reserved.</p>
             </div>
           </div>
@@ -530,7 +530,7 @@ export class EmailService {
   }
 
   // Send test email
-  static async sendTestEmail(to: string, subject: string = "Test Email from Vivaaha") {
+  static async sendTestEmail(to: string, subject: string = "Test Email from Super Sathi") {
     try {
       if (!this.transporter) {
         await this.initializeTransporter();
@@ -544,21 +544,21 @@ export class EmailService {
         );
         const dbConfig = settings[0];
         fromEmail = dbConfig?.smtp_from_email || process.env.EMAIL_FROM || process.env.EMAIL_USER || '';
-        fromName  = dbConfig?.smtp_from_name  || process.env.EMAIL_FROM_NAME || 'Vivaaha Matrimony';
+        fromName = dbConfig?.smtp_from_name || process.env.EMAIL_FROM_NAME || 'Super Sathi Matrimony';
       } catch (_) {
         fromEmail = process.env.EMAIL_FROM || process.env.EMAIL_USER || '';
-        fromName  = process.env.EMAIL_FROM_NAME || 'Vivaaha Matrimony';
+        fromName = process.env.EMAIL_FROM_NAME || 'Super Sathi Matrimony';
       }
 
       const mailOptions = {
         from: `${fromName} <${fromEmail}>`,
         to,
         subject,
-        text: "This is a test email from Vivaaha matrimony platform.",
+        text: "This is a test email from Super Sathi matrimony platform.",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2 style="color: #667eea;">Test Email</h2>
-            <p>This is a test email from Vivaaha matrimony platform.</p>
+            <p>This is a test email from Super Sathi matrimony platform.</p>
             <p>If you received this email, your email configuration is working correctly.</p>
             <p>Sent at: ${new Date().toLocaleString()}</p>
           </div>

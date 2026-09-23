@@ -149,7 +149,7 @@ async function sendWelcomeEmail(email, firstName, password, vivaaha_user_id) {
     <html>
     <head>
         <meta charset="utf-8">
-        <title>Welcome to Vivaaha Matrimony</title>
+        <title>Welcome to Super Sathi Matrimony</title>
         <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -166,18 +166,18 @@ async function sendWelcomeEmail(email, firstName, password, vivaaha_user_id) {
     <body>
         <div class="container">
             <div class="header">
-                <h1>🎉 Welcome to Vivaaha Matrimony!</h1>
+                <h1>🎉 Welcome to Super Sathi Matrimony!</h1>
                 <p>Your profile has been successfully created</p>
             </div>
             <div class="content">
                 <p>Dear ${firstName},</p>
 
-                <p>Congratulations! Your Vivaaha Matrimony profile has been created successfully by our admin team. Below are your login credentials:</p>
+                <p>Congratulations! Your Super Sathi Matrimony profile has been created successfully by our admin team. Below are your login credentials:</p>
 
                 <div class="credentials">
                     <h3>📧 Your Login Details:</h3>
                     <p><strong>Email:</strong> ${email}</p>
-                    <p><strong>Vivaaha ID:</strong> ${vivaaha_user_id}</p>
+                    <p><strong>Super Sathi ID:</strong> ${vivaaha_user_id}</p>
 
                     <div class="password-box">
                         <p><strong>Your Password:</strong></p>
@@ -196,7 +196,7 @@ async function sendWelcomeEmail(email, firstName, password, vivaaha_user_id) {
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="https://vivaaha.net/login" class="btn">Login to Your Account</a>
+                    <a href="https://staging.supersathi.com/login" class="btn">Login to Your Account</a>
                 </div>
 
                 <h3>🌟 What's Next?</h3>
@@ -209,21 +209,21 @@ async function sendWelcomeEmail(email, firstName, password, vivaaha_user_id) {
 
                 <p>If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
 
-                <p>Welcome to the Vivaaha family! We wish you the best in finding your perfect life partner.</p>
+                <p>Welcome to the Super Sathi family! We wish you the best in finding your perfect life partner.</p>
 
                 <p>Best regards,<br>
-                <strong>The Vivaaha Matrimony Team</strong></p>
+                <strong>The Super Sathi Matrimony Team</strong></p>
             </div>
             <div class="footer">
-                <p>This is an automated message from Vivaaha Matrimony</p>
+                <p>This is an automated message from Super Sathi Matrimony</p>
             </div>
         </div>
     </body>
     </html>
   `;
     await EmailService_1.EmailService.sendTemplateEmail('admin_account_creation', email, { user_name: firstName, email, temp_password: password, profile_id: vivaaha_user_id }, {
-        fallbackSubject: 'Welcome to Vivaaha Matrimony - Your Account Details',
-        fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Welcome to Vivaaha Matrimony!</h2><p>Dear ${firstName},</p><p>Your account has been created. Login credentials:</p><div style="background:#f8f9fa;padding:20px;border-radius:5px;margin:20px 0"><p><strong>Email:</strong> ${email}</p><p><strong>Vivaaha ID:</strong> ${vivaaha_user_id}</p><p><strong>Password:</strong> <span style="font-family:monospace;background:#e9ecef;padding:2px 4px">${password}</span></p></div><p style="color:#dc3545"><strong>Important:</strong> Please change your password after first login.</p><p>Best regards,<br>Vivaaha Matrimony Team</p></div>`,
+        fallbackSubject: 'Welcome to Super Sathi Matrimony - Your Account Details',
+        fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Welcome to Super Sathi Matrimony!</h2><p>Dear ${firstName},</p><p>Your account has been created. Login credentials:</p><div style="background:#f8f9fa;padding:20px;border-radius:5px;margin:20px 0"><p><strong>Email:</strong> ${email}</p><p><strong>Super Sathi ID:</strong> ${vivaaha_user_id}</p><p><strong>Password:</strong> <span style="font-family:monospace;background:#e9ecef;padding:2px 4px">${password}</span></p></div><p style="color:#dc3545"><strong>Important:</strong> Please change your password after first login.</p><p>Best regards,<br>Super Sathi Matrimony Team</p></div>`,
     });
 }
 // Admin Login
@@ -297,7 +297,7 @@ async function getAllUsers(req, res) {
             whereClause += " AND (u.email LIKE ? OR up.first_name LIKE ? OR up.middle_name LIKE ? OR up.last_name LIKE ? OR u.vivaaha_user_id LIKE ?)";
             params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
         }
-        // Vivaaha ID filter (new)
+        // Super Sathi ID filter (new)
         if (vivahaid) {
             whereClause += " AND u.vivaaha_user_id LIKE ?";
             params.push(`%${vivahaid}%`);
@@ -3457,7 +3457,7 @@ async function createCompleteUserProfile(req, res) {
         console.log(`Generated password for ${email}: ${userPassword}`);
         // Hash the password
         const hashedPassword = await bcrypt.hash(userPassword, 10);
-        // Generate unique Vivaaha User ID
+        // Generate unique Super Sathi User ID
         let vivaaha_user_id;
         let isUnique = false;
         let attempts = 0;
@@ -3472,7 +3472,7 @@ async function createCompleteUserProfile(req, res) {
         if (!isUnique) {
             return res.status(500).json({
                 success: false,
-                message: "Unable to generate unique Vivaaha User ID. Please try again.",
+                message: "Unable to generate unique Super Sathi User ID. Please try again.",
             });
         }
         // Create user with hashed password
@@ -3623,7 +3623,7 @@ async function createCompleteUserProfile(req, res) {
             if (error.sqlMessage && error.sqlMessage.includes('vivaaha_user_id')) {
                 return res.status(400).json({
                     success: false,
-                    message: "Vivaaha User ID already exists. Please try again."
+                    message: "Super Sathi User ID already exists. Please try again."
                 });
             }
             // Generic duplicate entry error

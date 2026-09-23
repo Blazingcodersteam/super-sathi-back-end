@@ -67,7 +67,7 @@ async function generateInvoicePDF(payment) {
             const contentWidth = pageWidth - leftMargin - rightMargin; // ~475
             // Header - INVOICE (Blue)
             doc.fontSize(36).fillColor('#2196F3').text('INVOICE', leftMargin, 60, { width: 200 });
-            // Right side - Logo and VIVAAHA (right-aligned within content area)
+            // Right side - Logo and Super Sathi (right-aligned within content area)
             try {
                 const logoPath = path.resolve(process.cwd(), 'src/logo.png');
                 if (fs.existsSync(logoPath)) {
@@ -77,8 +77,8 @@ async function generateInvoicePDF(payment) {
             catch (err) {
                 console.log('Logo not found, skipping');
             }
-            doc.fontSize(20).fillColor('#FFA726').text('VIVAAHA', leftMargin, 110, { width: contentWidth, align: 'right' });
-            doc.fontSize(9).fillColor('#666').text('support@vivaaha.net', leftMargin, 135, { width: contentWidth, align: 'right' });
+            doc.fontSize(20).fillColor('#FFA726').text('Super Sathi', leftMargin, 110, { width: contentWidth, align: 'right' });
+            doc.fontSize(9).fillColor('#666').text('support@supersathi.com', leftMargin, 135, { width: contentWidth, align: 'right' });
             // Invoice Info
             doc.fontSize(11).fillColor('#000');
             doc.text(`Invoice #: ${payment.invoice_number}`, leftMargin, 160, { width: contentWidth });
@@ -120,7 +120,7 @@ async function generateInvoicePDF(payment) {
             // Footer
             doc.fontSize(10).fillColor('#666');
             doc.text('Thank you for your business!', leftMargin, 720, { align: 'center', width: contentWidth });
-            doc.text('For any queries, contact us at support@vivaaha.net', leftMargin, 738, { align: 'center', width: contentWidth });
+            doc.text('For any queries, contact us at support@supersathi.com', leftMargin, 738, { align: 'center', width: contentWidth });
             doc.end();
         }
         catch (error) {
@@ -286,7 +286,7 @@ async function getInvoiceHtml(req, res) {
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Invoice - ${payment.invoice_number}</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f5f5f5;padding:20px}.invoice-container{max-width:800px;margin:0 auto;background:white;padding:60px;box-shadow:0 0 20px rgba(0,0,0,0.1)}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;gap:20px}.invoice-title{color:#2196F3;font-size:42px;font-weight:bold;letter-spacing:1px;white-space:nowrap;flex-shrink:0}.logo-section{text-align:right;flex-shrink:0;min-width:180px}.logo-icon{width:60px;height:60px;margin-bottom:10px}.logo-text{color:#FFA726;font-size:28px;font-weight:bold;letter-spacing:2px;white-space:nowrap}.support-email{color:#666;font-size:14px;margin-top:8px;white-space:nowrap}.invoice-info{margin-bottom:40px}.invoice-info p{margin:8px 0;font-size:15px;color:#333;word-break:break-word}.invoice-info strong{font-weight:600}.divider{border-top:2px solid #e0e0e0;margin:35px 0}.bill-to{margin-bottom:40px}.bill-to h3{font-size:18px;font-weight:600;margin-bottom:20px;color:#333}.bill-to p{margin:8px 0;color:#555;font-size:15px;word-break:break-word}.items-section{margin-bottom:40px}.items-table{width:100%;border-collapse:collapse;table-layout:fixed}.items-table thead tr{border-bottom:2px solid #e0e0e0}.items-table th{text-align:left;padding:15px 0;font-weight:600;font-size:16px;color:#333}.items-table th.amount-col{width:150px}.items-table td{padding:18px 0;font-size:15px;color:#555}.amount-col{text-align:right;white-space:nowrap}.total-row{border-top:2px solid #e0e0e0;font-weight:600;font-size:18px;color:#000}.total-row td{padding-top:20px}.payment-details{margin-bottom:40px;background:#f9f9f9;padding:25px;border-radius:4px}.payment-details h3{font-size:18px;font-weight:600;margin-bottom:15px;color:#333}.payment-details p{margin:10px 0;font-size:15px;color:#555;word-break:break-all}.footer{text-align:center;color:#666;font-size:14px;margin-top:50px;padding-top:30px;border-top:1px solid #e0e0e0;line-height:1.8}.print-btn{background:#2196F3;color:white;padding:12px 30px;border:none;border-radius:4px;cursor:pointer;margin-bottom:30px;font-size:15px;font-weight:500}@media print{.print-btn{display:none}body{background:white;padding:0}.invoice-container{box-shadow:none;padding:40px}}</style></head>
 <body><div class="invoice-container"><button class="print-btn" onclick="window.print()">Print Invoice</button>
-<div class="header"><div><div class="invoice-title">INVOICE</div></div><div class="logo-section"><svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="25" r="12" fill="#FFA726"/><circle cx="70" cy="25" r="12" fill="#FFA726"/><path d="M 50 45 Q 30 55 20 75 Q 30 85 50 95 Q 70 85 80 75 Q 70 55 50 45 Z" fill="#FFA726"/><path d="M 50 50 L 50 80" stroke="#FFF" stroke-width="3"/><path d="M 40 65 L 50 75 L 60 65" stroke="#FFF" stroke-width="3" fill="none"/></svg><div class="logo-text">VIVAAHA</div><div class="support-email">support@vivaaha.net</div></div></div>
+<div class="header"><div><div class="invoice-title">INVOICE</div></div><div class="logo-section"><svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="25" r="12" fill="#FFA726"/><circle cx="70" cy="25" r="12" fill="#FFA726"/><path d="M 50 45 Q 30 55 20 75 Q 30 85 50 95 Q 70 85 80 75 Q 70 55 50 45 Z" fill="#FFA726"/><path d="M 50 50 L 50 80" stroke="#FFF" stroke-width="3"/><path d="M 40 65 L 50 75 L 60 65" stroke="#FFF" stroke-width="3" fill="none"/></svg><div class="logo-text">Super Sathi</div><div class="support-email">support@supersathi.com</div></div></div>
 <div class="invoice-info"><p><strong>Invoice #:</strong> ${payment.invoice_number}</p><p><strong>Date:</strong> ${invoiceDate}</p></div><div class="divider"></div>
 <div class="bill-to"><h3>Bill To:</h3><p><strong>${customerName}</strong></p><p>${payment.email}</p><p>${payment.phone || ''}</p></div>
 <div class="items-section"><table class="items-table"><thead><tr><th>Description</th><th class="amount-col">Amount</th></tr></thead><tbody>
@@ -295,7 +295,7 @@ async function getInvoiceHtml(req, res) {
 <tr class="total-row"><td><strong>Total Amount</strong></td><td class="amount-col"><strong>₹${totalAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</strong></td></tr></tbody></table></div>
 <div class="payment-details"><h3>Payment Details</h3><p><strong>Payment Method:</strong> ${(payment.payment_method || 'UPI').toUpperCase()}</p>
 <p><strong>Transaction ID:</strong> ${payment.payment_id || payment.order_id || 'undefined'}</p></div><div class="divider"></div>
-<div class="footer"><p><strong>Thank you for your business!</strong></p><p>For any queries, contact us at support@vivaaha.net</p></div></div></body></html>`;
+<div class="footer"><p><strong>Thank you for your business!</strong></p><p>For any queries, contact us at support@supersathi.com</p></div></div></body></html>`;
         res.send(html);
     }
     catch (error) {
@@ -665,7 +665,7 @@ async function verifyPayment(req, res) {
             }
             // 8. Generate invoice details and update payment record within transaction
             invoiceNumber = `INV-${new Date().getFullYear()}-${String(paymentInsertId).padStart(6, '0')}`;
-            invoiceUrl = `${process.env.FRONTEND_URL || 'https://vivaaha.net'}/invoice/${invoiceNumber}`;
+            invoiceUrl = `${process.env.FRONTEND_URL || 'https://staging.supersathi.com'}/invoice/${invoiceNumber}`;
             await queryConn(`
         UPDATE payments SET invoice_number = ?, invoice_url = ? WHERE id = ?
       `, [invoiceNumber, invoiceUrl, paymentInsertId]);

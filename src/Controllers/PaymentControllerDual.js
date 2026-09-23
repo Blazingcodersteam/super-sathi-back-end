@@ -73,7 +73,7 @@ async function generateInvoicePDF(payment) {
             const contentWidth = pageWidth - leftMargin - rightMargin; // ~475
             // Header - INVOICE (Blue)
             doc.fontSize(36).fillColor('#2196F3').text('INVOICE', leftMargin, 60, { width: 200 });
-            // Right side - Logo and VIVAAHA (right-aligned within content area)
+            // Right side - Logo and Super Sathi (right-aligned within content area)
             try {
                 const logoPath = path.resolve(process.cwd(), 'src/logo.png');
                 if (fs.existsSync(logoPath)) {
@@ -83,8 +83,8 @@ async function generateInvoicePDF(payment) {
             catch (err) {
                 console.log('Logo not found, skipping');
             }
-            doc.fontSize(20).fillColor('#FFA726').text('VIVAAHA', leftMargin, 110, { width: contentWidth, align: 'right' });
-            doc.fontSize(9).fillColor('#666').text('support@vivaaha.net', leftMargin, 135, { width: contentWidth, align: 'right' });
+            doc.fontSize(20).fillColor('#FFA726').text('Super Sathi', leftMargin, 110, { width: contentWidth, align: 'right' });
+            doc.fontSize(9).fillColor('#666').text('support@supersathi.com', leftMargin, 135, { width: contentWidth, align: 'right' });
             // Invoice Info
             doc.fontSize(11).fillColor('#000');
             doc.text(`Invoice #: ${payment.invoice_number}`, leftMargin, 160, { width: contentWidth });
@@ -126,7 +126,7 @@ async function generateInvoicePDF(payment) {
             // Footer
             doc.fontSize(10).fillColor('#666');
             doc.text('Thank you for your business!', leftMargin, 720, { align: 'center', width: contentWidth });
-            doc.text('For any queries, contact us at support@vivaaha.net', leftMargin, 738, { align: 'center', width: contentWidth });
+            doc.text('For any queries, contact us at support@supersathi.com', leftMargin, 738, { align: 'center', width: contentWidth });
             doc.end();
         }
         catch (error) {
@@ -523,7 +523,7 @@ async function handleCCAvenueCallback(req, res) {
                 paymentInsertId = paymentResult.insertId;
                 // 4. Generate invoice number and update payment record
                 invoiceNumber = `INV-${new Date().getFullYear()}-${String(paymentInsertId).padStart(6, '0')}`;
-                invoiceUrl = `${process.env.FRONTEND_URL || 'https://vivaaha.net'}/api/payments/invoice-view/${invoiceNumber}`;
+                invoiceUrl = `${process.env.FRONTEND_URL || 'https://staging.supersathi.com'}/api/payments/invoice-view/${invoiceNumber}`;
                 await queryConn(`
           UPDATE payments SET invoice_number = ?, invoice_url = ? WHERE id = ?
         `, [invoiceNumber, invoiceUrl, paymentInsertId]);
@@ -613,7 +613,7 @@ async function handleCCAvenueCallback(req, res) {
                 catch (logErr) {
                     console.error("Failed to log CCAvenue reconciliation alert:", logErr);
                 }
-                return res.redirect(`https://vivaaha.net/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent('Payment received but activation failed. Support has been notified for reconciliation.')}`);
+                return res.redirect(`https://staging.supersathi.com/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent('Payment received but activation failed. Support has been notified for reconciliation.')}`);
             }
             // Post-commit PDF Generation (does not block subscription activation)
             try {
@@ -637,7 +637,7 @@ async function handleCCAvenueCallback(req, res) {
             catch (pdfErr) {
                 console.error("Invoice PDF generation error (CCAvenue subscription already active):", pdfErr);
             }
-            res.redirect(`https://vivaaha.net/payment/success?order_id=${orderId}&tracking_id=${trackingId}&amount=${amount}&status=success&invoice_number=${invoiceNumber}&invoice_url=${encodeURIComponent(invoiceUrl)}`);
+            res.redirect(`https://staging.supersathi.com/payment/success?order_id=${orderId}&tracking_id=${trackingId}&amount=${amount}&status=success&invoice_number=${invoiceNumber}&invoice_url=${encodeURIComponent(invoiceUrl)}`);
         }
         else {
             // Payment failed
@@ -648,7 +648,7 @@ async function handleCCAvenueCallback(req, res) {
             await query(`
         UPDATE payment_orders SET status = 'failed', updated_at = CURRENT_TIMESTAMP WHERE ccavenue_order_id = ?
       `, [orderId]);
-            res.redirect(`https://vivaaha.net/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent(decryptedData.failure_message || 'Payment failed')}`);
+            res.redirect(`https://staging.supersathi.com/payment/failed?order_id=${orderId}&tracking_id=${trackingId}&status=failed&message=${encodeURIComponent(decryptedData.failure_message || 'Payment failed')}`);
         }
     }
     catch (error) {
@@ -682,7 +682,7 @@ async function handleCCAvenueCancel(req, res) {
       SELECT user_id, ccavenue_order_id, amount, 'failed', 'ccavenue', 'Payment cancelled by user'
       FROM payment_orders WHERE ccavenue_order_id = ?
     `, [orderId]);
-        res.redirect(`https://vivaaha.net/payment/cancelled?order_id=${orderId}&status=cancelled`);
+        res.redirect(`https://staging.supersathi.com/payment/cancelled?order_id=${orderId}&status=cancelled`);
     }
     catch (error) {
         console.error("CCAvenue Cancel Error:", error);

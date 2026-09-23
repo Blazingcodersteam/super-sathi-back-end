@@ -89,15 +89,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Root and Health endpoints
-app.get("/", (req, res) => {
-  res.status(200).json({
-    status: "online",
-    service: "Supersathi Backend API",
-    version: "1.0.0"
-  });
-});
-
+// Health endpoints
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
 });
@@ -107,12 +99,12 @@ app.get("/api/health", (req, res) => {
 });
 
 // API root
-app.get("/api", (req, res) => {
-  res.status(200).send("Supersathi API Code");
-});
-
-app.get("/api/", (req, res) => {
-  res.status(200).send("Supersathi API Code");
+app.get(["/api", "/api/"], (req, res) => {
+  res.status(200).json({
+    status: "online",
+    service: "Supersathi Backend API",
+    version: "1.0.0"
+  });
 });
 
 // OTP routes
@@ -156,28 +148,35 @@ if (fs.existsSync(uploadsPath)) {
   app.use("/uploads", express.static(uploadsPath));
 }
 
-// ==== Optional Admin / Frontend Static Files (Safe fallback only if build artifacts exist) ====
+// ==== Serve Admin Static Files & SPA Fallback ====
 const adminBuildPath = path.resolve(__dirname, "admin");
+app.use("/admin", express.static(adminBuildPath));
+app.get(["/admin", "/admin/*"], (req, res, next) => {
+  const adminIndexFile = path.join(adminBuildPath, "index.html");
+  if (fs.existsSync(adminIndexFile)) {
+    return res.sendFile(adminIndexFile);
+  }
+  next();
+});
+
+// ==== Serve React Front-End Static Files & SPA Fallback ====
 const frontBuildPath = path.resolve(__dirname, "front");
-const hasAdminIndex = fs.existsSync(path.join(adminBuildPath, "index.html"));
-const hasFrontIndex = fs.existsSync(path.join(frontBuildPath, "index.html"));
-
-if (hasAdminIndex) {
-  app.use("/admin", express.static(adminBuildPath));
-  app.get("/admin/*", (req, res) => {
-    res.sendFile(path.join(adminBuildPath, "index.html"));
-  });
-}
-
-if (hasFrontIndex) {
-  app.use(express.static(frontBuildPath));
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api") || req.path.startsWith("/uploads") || req.path.startsWith("/verification")) {
-      return next();
-    }
-    res.sendFile(path.join(frontBuildPath, "index.html"));
-  });
-}
+app.use(express.static(frontBuildPath));
+app.get("*", (req, res, next) => {
+  if (
+    req.path.startsWith("/api") ||
+    req.path.startsWith("/uploads") ||
+    req.path.startsWith("/verification") ||
+    req.path.startsWith("/admin")
+  ) {
+    return next();
+  }
+  const frontIndexFile = path.join(frontBuildPath, "index.html");
+  if (fs.existsSync(frontIndexFile)) {
+    return res.sendFile(frontIndexFile);
+  }
+  next();
+});
 
 // ==== API 404 Handler ====
 app.use("/api/*", (req, res) => {

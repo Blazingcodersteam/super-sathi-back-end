@@ -69,7 +69,7 @@ async function sendWelcomeEmail(email: string, firstName: string, password: stri
     <html>
     <head>
         <meta charset="utf-8">
-        <title>Welcome to Vivaaha Matrimony</title>
+        <title>Welcome to Super Sathi Matrimony</title>
         <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -86,18 +86,18 @@ async function sendWelcomeEmail(email: string, firstName: string, password: stri
     <body>
         <div class="container">
             <div class="header">
-                <h1>🎉 Welcome to Vivaaha Matrimony!</h1>
+                <h1>🎉 Welcome to Super Sathi Matrimony!</h1>
                 <p>Your profile has been successfully created</p>
             </div>
             <div class="content">
                 <p>Dear ${firstName},</p>
 
-                <p>Congratulations! Your Vivaaha Matrimony profile has been created successfully by our admin team. Below are your login credentials:</p>
+                <p>Congratulations! Your Super Sathi Matrimony profile has been created successfully by our admin team. Below are your login credentials:</p>
 
                 <div class="credentials">
                     <h3>📧 Your Login Details:</h3>
                     <p><strong>Email:</strong> ${email}</p>
-                    <p><strong>Vivaaha ID:</strong> ${vivaaha_user_id}</p>
+                    <p><strong>Super Sathi ID:</strong> ${vivaaha_user_id}</p>
 
                     <div class="password-box">
                         <p><strong>Your Password:</strong></p>
@@ -116,7 +116,7 @@ async function sendWelcomeEmail(email: string, firstName: string, password: stri
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="https://vivaaha.net/login" class="btn">Login to Your Account</a>
+                    <a href="https://staging.supersathi.com/login" class="btn">Login to Your Account</a>
                 </div>
 
                 <h3>🌟 What's Next?</h3>
@@ -129,13 +129,13 @@ async function sendWelcomeEmail(email: string, firstName: string, password: stri
 
                 <p>If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
 
-                <p>Welcome to the Vivaaha family! We wish you the best in finding your perfect life partner.</p>
+                <p>Welcome to the Super Sathi family! We wish you the best in finding your perfect life partner.</p>
 
                 <p>Best regards,<br>
-                <strong>The Vivaaha Matrimony Team</strong></p>
+                <strong>The Super Sathi Matrimony Team</strong></p>
             </div>
             <div class="footer">
-                <p>This is an automated message from Vivaaha Matrimony</p>
+                <p>This is an automated message from Super Sathi Matrimony</p>
             </div>
         </div>
     </body>
@@ -147,8 +147,8 @@ async function sendWelcomeEmail(email: string, firstName: string, password: stri
     email,
     { user_name: firstName, email, temp_password: password, profile_id: vivaaha_user_id },
     {
-      fallbackSubject: 'Welcome to Vivaaha Matrimony - Your Account Details',
-      fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Welcome to Vivaaha Matrimony!</h2><p>Dear ${firstName},</p><p>Your account has been created. Login credentials:</p><div style="background:#f8f9fa;padding:20px;border-radius:5px;margin:20px 0"><p><strong>Email:</strong> ${email}</p><p><strong>Vivaaha ID:</strong> ${vivaaha_user_id}</p><p><strong>Password:</strong> <span style="font-family:monospace;background:#e9ecef;padding:2px 4px">${password}</span></p></div><p style="color:#dc3545"><strong>Important:</strong> Please change your password after first login.</p><p>Best regards,<br>Vivaaha Matrimony Team</p></div>`,
+      fallbackSubject: 'Welcome to Super Sathi Matrimony - Your Account Details',
+      fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Welcome to Super Sathi Matrimony!</h2><p>Dear ${firstName},</p><p>Your account has been created. Login credentials:</p><div style="background:#f8f9fa;padding:20px;border-radius:5px;margin:20px 0"><p><strong>Email:</strong> ${email}</p><p><strong>Super Sathi ID:</strong> ${vivaaha_user_id}</p><p><strong>Password:</strong> <span style="font-family:monospace;background:#e9ecef;padding:2px 4px">${password}</span></p></div><p style="color:#dc3545"><strong>Important:</strong> Please change your password after first login.</p><p>Best regards,<br>Super Sathi Matrimony Team</p></div>`,
     }
   );
 }
@@ -250,7 +250,7 @@ export async function getAllUsers(req, res) {
       params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
     }
 
-    // Vivaaha ID filter (new)
+    // Super Sathi ID filter (new)
     if (vivahaid) {
       whereClause += " AND u.vivaaha_user_id LIKE ?";
       params.push(`%${vivahaid}%`);
@@ -1367,7 +1367,7 @@ export async function updateWebsiteContent(req, res) {
          updated_at = CURRENT_TIMESTAMP
          WHERE id = ?`,
         [privacy_policy, terms_conditions, refund_policy, safe_policy, be_safe_online,
-         homepage_banner ? JSON.stringify(homepage_banner) : null, title, subtitle, description, existing.id]
+          homepage_banner ? JSON.stringify(homepage_banner) : null, title, subtitle, description, existing.id]
       );
     } else {
       // Insert new content
@@ -1376,7 +1376,7 @@ export async function updateWebsiteContent(req, res) {
          (privacy_policy, terms_conditions, refund_policy, safe_policy, be_safe_online, homepage_banner, title, subtitle, description)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [privacy_policy, terms_conditions, refund_policy, safe_policy, be_safe_online,
-         homepage_banner ? JSON.stringify(homepage_banner) : null, title, subtitle, description]
+          homepage_banner ? JSON.stringify(homepage_banner) : null, title, subtitle, description]
       );
     }
 
@@ -2906,7 +2906,7 @@ export async function updateUserProfile(req, res) {
        drinking_id = COALESCE(?, drinking_id)
        WHERE user_id = ?`,
       [height, weight, marital_status_id, about_myself, blood_group_id,
-       diet_id, health_info_id, disability_id, smoking_id, drinking_id, id]
+        diet_id, health_info_id, disability_id, smoking_id, drinking_id, id]
     );
 
     // Update career details if provided
@@ -3055,8 +3055,8 @@ export async function updateUserBasic(req, res) {
   try {
     const { id } = req.params;
     const { first_name, middle_name, last_name, date_of_birth, height, weight, marital_status_id, has_children, number_of_children,
-            lives_with_family, blood_group_id, profile_managed_by_id, diet_id, health_info_id,
-            disability_id, smoking_id, drinking_id } = req.body;
+      lives_with_family, blood_group_id, profile_managed_by_id, diet_id, health_info_id,
+      disability_id, smoking_id, drinking_id } = req.body;
 
     // Check if user exists
     const [existing] = await query("SELECT id FROM users WHERE id = ?", [id]);
@@ -3193,7 +3193,7 @@ export async function updateUserAstro(req, res) {
   try {
     const { id } = req.params;
     const { country_of_birth_id, state_of_birth, city_of_birth, birth_time,
-            birth_time_type, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id } = req.body;
+      birth_time_type, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id } = req.body;
 
     // Check if user exists
     const [existing] = await query("SELECT id FROM users WHERE id = ?", [id]);
@@ -3225,7 +3225,7 @@ export async function updateUserAstro(req, res) {
          birth_time = ?, birth_time_type = ?, manglik_status = ?, dosham = ?, gothra_id = ?,
          rasi_id = ?, nakshatra_id = ? WHERE user_id = ?`,
         [country_of_birth_id, state_of_birth, city_of_birth, birth_time,
-         validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id, id]
+          validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id, id]
       );
     } else {
       await query(
@@ -3233,7 +3233,7 @@ export async function updateUserAstro(req, res) {
          birth_time, birth_time_type, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [id, country_of_birth_id, state_of_birth, city_of_birth, birth_time,
-         validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id]
+          validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id]
       );
     }
 
@@ -3249,8 +3249,8 @@ export async function updateUserFamily(req, res) {
   try {
     const { id } = req.params;
     const { father_name, father_occupation_id, mother_name, mother_occupation_id,
-            no_of_sisters, no_of_brothers, family_country_id, family_state,
-            family_financial_status_id, family_type_id, family_values_id } = req.body;
+      no_of_sisters, no_of_brothers, family_country_id, family_state,
+      family_financial_status_id, family_type_id, family_values_id } = req.body;
 
     // Check if user exists
     const [existing] = await query("SELECT id FROM users WHERE id = ?", [id]);
@@ -3270,8 +3270,8 @@ export async function updateUserFamily(req, res) {
          family_state = ?, family_financial_status_id = ?, family_type_id = ?, family_values_id = ?
          WHERE user_id = ?`,
         [father_name, father_occupation_id, mother_name, mother_occupation_id, no_of_sisters,
-         no_of_brothers, family_country_id, family_state, family_financial_status_id,
-         family_type_id, family_values_id, id]
+          no_of_brothers, family_country_id, family_state, family_financial_status_id,
+          family_type_id, family_values_id, id]
       );
     } else {
       await query(
@@ -3280,8 +3280,8 @@ export async function updateUserFamily(req, res) {
          family_financial_status_id, family_type_id, family_values_id)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [id, father_name, father_occupation_id, mother_name, mother_occupation_id, no_of_sisters,
-         no_of_brothers, family_country_id, family_state, family_financial_status_id,
-         family_type_id, family_values_id]
+          no_of_brothers, family_country_id, family_state, family_financial_status_id,
+          family_type_id, family_values_id]
       );
     }
 
@@ -3297,7 +3297,7 @@ export async function updateUserCareer(req, res) {
   try {
     const { id } = req.params;
     const { highest_qualification, college_attended, college_attended_2, working_with_id,
-            working_as, employer_name, annual_income, income_type, keep_income_private } = req.body;
+      working_as, employer_name, annual_income, income_type, keep_income_private } = req.body;
 
     // Check if user exists
     const [existing] = await query("SELECT id FROM users WHERE id = ?", [id]);
@@ -3316,7 +3316,7 @@ export async function updateUserCareer(req, res) {
          working_with_id = ?, working_as = ?, employer_name = ?, annual_income = ?, income_type = ?,
          keep_income_private = ? WHERE user_id = ?`,
         [highest_qualification, college_attended, working_with_id, working_as, employer_name,
-         annual_income, income_type, keep_income_private, id]
+          annual_income, income_type, keep_income_private, id]
       );
     } else {
       await query(
@@ -3324,7 +3324,7 @@ export async function updateUserCareer(req, res) {
          working_with_id, working_as, employer_name, annual_income, income_type, keep_income_private, currency_id)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
         [id, highest_qualification, college_attended, working_with_id, working_as,
-         employer_name, annual_income, income_type, keep_income_private]
+          employer_name, annual_income, income_type, keep_income_private]
       );
     }
 
@@ -3674,7 +3674,7 @@ export async function updateCompleteUserProfile(req, res) {
 
     // Update astro_details table
     if (country_of_birth_id || state_of_birth || city_of_birth || birth_time || birth_time_type ||
-        manglik_status !== undefined || dosham !== undefined || gothra_id || rasi_id || nakshatra_id) {
+      manglik_status !== undefined || dosham !== undefined || gothra_id || rasi_id || nakshatra_id) {
 
       // Validate birth_time_type
       let validBirthTimeType = null;
@@ -3719,15 +3719,15 @@ export async function updateCompleteUserProfile(req, res) {
            birth_time, birth_time_type, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [id, country_of_birth_id, state_of_birth, city_of_birth, birth_time,
-           validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id]
+            validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id]
         );
       }
     }
 
     // Update family_details table
     if (father_name || father_occupation_id || mother_name || mother_occupation_id ||
-        no_of_sisters !== undefined || no_of_brothers !== undefined || family_country_id ||
-        family_state || family_financial_status_id || family_type_id || family_values_id) {
+      no_of_sisters !== undefined || no_of_brothers !== undefined || family_country_id ||
+      family_state || family_financial_status_id || family_type_id || family_values_id) {
 
       const [existingFamily] = await query(`SELECT id FROM family_details WHERE user_id = ?`, [id]);
 
@@ -3761,16 +3761,16 @@ export async function updateCompleteUserProfile(req, res) {
            family_financial_status_id, family_type_id, family_values_id, family_status_id)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
           [id, father_name, father_occupation_id, mother_name, mother_occupation_id, no_of_sisters,
-           no_of_brothers, family_country_id, family_state, family_financial_status_id,
-           family_type_id, family_values_id]
+            no_of_brothers, family_country_id, family_state, family_financial_status_id,
+            family_type_id, family_values_id]
         );
       }
     }
 
     // Update career_details table
     if (highest_qualification || college_attended || college_attended_2 || working_with_id ||
-        working_as || employer_name || annual_income !== undefined || income_type ||
-        keep_income_private !== undefined || profession_id || grew_up_in || ethnic_origin_id) {
+      working_as || employer_name || annual_income !== undefined || income_type ||
+      keep_income_private !== undefined || profession_id || grew_up_in || ethnic_origin_id) {
 
       const [existingCareer] = await query(`SELECT id FROM career_details WHERE user_id = ?`, [id]);
 
@@ -3804,14 +3804,14 @@ export async function updateCompleteUserProfile(req, res) {
            grew_up_in_ids, ethnic_origin_id, profession_id)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
           [id, highest_qualification, college_attended, working_with_id, working_as, employer_name,
-           annual_income, income_type, keep_income_private, JSON.stringify(grew_up_in || []), ethnic_origin_id, profession_id || 1]
+            annual_income, income_type, keep_income_private, JSON.stringify(grew_up_in || []), ethnic_origin_id, profession_id || 1]
         );
       }
     }
 
     // Update location_details table
     if (current_residence || residency_status || state_living_in || state_id ||
-        city_id || country_id || zip_code || latitude !== undefined || longitude !== undefined) {
+      city_id || country_id || zip_code || latitude !== undefined || longitude !== undefined) {
 
       const [existingLocation] = await query(`SELECT id FROM location_details WHERE user_id = ?`, [id]);
 
@@ -3842,7 +3842,7 @@ export async function updateCompleteUserProfile(req, res) {
            state_living_in, state_id, city_id, country_id, zip_code, latitude, longitude)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [id, current_residence, residency_status, state_living_in, state_id, city_id,
-           country_id || 1, zip_code, latitude, longitude]
+            country_id || 1, zip_code, latitude, longitude]
         );
       }
     }
@@ -3856,10 +3856,10 @@ export async function updateCompleteUserProfile(req, res) {
         const educationValues = [];
 
         if (education_level_id) { educationUpdates.push('education_level_id = ?'); educationValues.push(education_level_id); }
-        if (education_area_id)  { educationUpdates.push('education_area_id = ?');  educationValues.push(education_area_id); }
-        if (field_of_study)     { educationUpdates.push('field_of_study = ?');     educationValues.push(field_of_study); }
-        if (graduation_year)    { educationUpdates.push('graduation_year = ?');    educationValues.push(graduation_year); }
-        if (graduation_year_2)  { educationUpdates.push('graduation_year_2 = ?');  educationValues.push(graduation_year_2); }
+        if (education_area_id) { educationUpdates.push('education_area_id = ?'); educationValues.push(education_area_id); }
+        if (field_of_study) { educationUpdates.push('field_of_study = ?'); educationValues.push(field_of_study); }
+        if (graduation_year) { educationUpdates.push('graduation_year = ?'); educationValues.push(graduation_year); }
+        if (graduation_year_2) { educationUpdates.push('graduation_year_2 = ?'); educationValues.push(graduation_year_2); }
         if (institution_name || college_attended) { educationUpdates.push('institution_name = ?'); educationValues.push(institution_name || college_attended); }
         const inst2 = institution_name_2 || college_attended_2;
         if (inst2) { educationUpdates.push('institution_name_2 = ?'); educationValues.push(inst2); }
@@ -3878,7 +3878,7 @@ export async function updateCompleteUserProfile(req, res) {
            field_of_study, institution_name, institution_name_2, graduation_year, graduation_year_2)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           [id, education_level_id || 1, education_area_id, field_of_study,
-           institution_name || college_attended, inst2 || null, graduation_year, graduation_year_2 || null]
+            institution_name || college_attended, inst2 || null, graduation_year, graduation_year_2 || null]
         );
       }
     }
@@ -4028,7 +4028,7 @@ export async function createCompleteUserProfile(req, res) {
     // Hash the password
     const hashedPassword = await bcrypt.hash(userPassword, 10);
 
-    // Generate unique Vivaaha User ID
+    // Generate unique Super Sathi User ID
     let vivaaha_user_id;
     let isUnique = false;
     let attempts = 0;
@@ -4045,7 +4045,7 @@ export async function createCompleteUserProfile(req, res) {
     if (!isUnique) {
       return res.status(500).json({
         success: false,
-        message: "Unable to generate unique Vivaaha User ID. Please try again.",
+        message: "Unable to generate unique Super Sathi User ID. Please try again.",
       });
     }
 
@@ -4064,7 +4064,7 @@ export async function createCompleteUserProfile(req, res) {
     const hasChildrenValue = has_children !== undefined ?
       (has_children == 1 || has_children === 'yes' || has_children === true || has_children === 'yes_living_together' || has_children === 'yes_not_living_together' ?
         (has_children === 'yes_living_together' ? 'yes_living_together' :
-         has_children === 'yes_not_living_together' ? 'yes_not_living_together' : 'yes_living_together') : 'no') : 'no';
+          has_children === 'yes_not_living_together' ? 'yes_not_living_together' : 'yes_living_together') : 'no') : 'no';
     let numberOfChildrenValue = null;
     if (hasChildrenValue !== 'no' && number_of_children !== undefined) {
       // Handle ENUM values: '1', '2', '3', 'more_than_3'
@@ -4089,9 +4089,9 @@ export async function createCompleteUserProfile(req, res) {
        lives_with_family, family_location, profile_created_by)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [userId, first_name, middle_name, last_name, gender_id, date_of_birth, age, height, weight,
-       marital_status_id, religion_id, caste_id, community_id, mother_tongue_id, blood_group_id,
-       diet_id, health_info_id, disability_id, smoking_id, drinking_id, profile_managed_by_id, about_myself,
-       hasChildrenValue, numberOfChildrenValue, lives_with_family !== undefined ? lives_with_family : 1, family_location, profile_for || 'self']
+        marital_status_id, religion_id, caste_id, community_id, mother_tongue_id, blood_group_id,
+        diet_id, health_info_id, disability_id, smoking_id, drinking_id, profile_managed_by_id, about_myself,
+        hasChildrenValue, numberOfChildrenValue, lives_with_family !== undefined ? lives_with_family : 1, family_location, profile_for || 'self']
     );
 
     // Validate birth_time_type - convert to acceptable values
@@ -4114,7 +4114,7 @@ export async function createCompleteUserProfile(req, res) {
          birth_time, birth_time_type, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [userId, country_of_birth_id, state_of_birth, city_of_birth, birth_time,
-         validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id]
+          validBirthTimeType, manglik_status, dosham, gothra_id, rasi_id, nakshatra_id]
       );
     }
 
@@ -4126,8 +4126,8 @@ export async function createCompleteUserProfile(req, res) {
          family_financial_status_id, family_type_id, family_values_id, family_status_id)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`,
         [userId, father_name, father_occupation_id, mother_name, mother_occupation_id, no_of_sisters,
-         no_of_brothers, family_country_id, family_state, family_financial_status_id,
-         family_type_id, family_values_id]
+          no_of_brothers, family_country_id, family_state, family_financial_status_id,
+          family_type_id, family_values_id]
       );
     }
 
@@ -4143,9 +4143,9 @@ export async function createCompleteUserProfile(req, res) {
          grew_up_in_ids, ethnic_origin_id, profession_id, occupation, company_name)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, 1, ?, ?)`,
         [userId, highest_qualification, college_attended, working_with_id, working_as || occupation,
-         employer_name || company_name, annual_income, income_type, keep_income_private,
-         JSON.stringify(grew_up_in || []), ethnic_origin_id, occupation || working_as,
-         company_name || employer_name]
+          employer_name || company_name, annual_income, income_type, keep_income_private,
+          JSON.stringify(grew_up_in || []), ethnic_origin_id, occupation || working_as,
+          company_name || employer_name]
       );
     }
 
@@ -4156,7 +4156,7 @@ export async function createCompleteUserProfile(req, res) {
          state_living_in, state_id, city_id, country_id, zip_code, latitude, longitude)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [userId, current_residence, residency_status, state_living_in, state_id, city_id,
-         country_id || 1, zip_code, latitude, longitude]
+          country_id || 1, zip_code, latitude, longitude]
       );
     }
 
@@ -4177,7 +4177,7 @@ export async function createCompleteUserProfile(req, res) {
          field_of_study, institution_name, institution_name_2, graduation_year, graduation_year_2)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [userId, education_level_id || 1, education_area_id, field_of_study,
-         inst1, inst2, graduation_year, graduation_year_2 || null]
+          inst1, inst2, graduation_year, graduation_year_2 || null]
       );
     }
 
@@ -4233,7 +4233,7 @@ export async function createCompleteUserProfile(req, res) {
       if (error.sqlMessage && error.sqlMessage.includes('vivaaha_user_id')) {
         return res.status(400).json({
           success: false,
-          message: "Vivaaha User ID already exists. Please try again."
+          message: "Super Sathi User ID already exists. Please try again."
         });
       }
       // Generic duplicate entry error
@@ -7354,36 +7354,36 @@ export async function getAdminDashboard(req, res) {
 
     // Below is logesh changes
 
-  //   const [stats] = await query(`
-  //   SELECT 
-  //     (SELECT COUNT(*) FROM users WHERE user_type_id = 1) as total_users,
-  //     (SELECT COUNT(*) FROM users WHERE user_type_id = 1 AND DATE(created_at) = CURDATE()) as today_registrations,
+    //   const [stats] = await query(`
+    //   SELECT 
+    //     (SELECT COUNT(*) FROM users WHERE user_type_id = 1) as total_users,
+    //     (SELECT COUNT(*) FROM users WHERE user_type_id = 1 AND DATE(created_at) = CURDATE()) as today_registrations,
 
-  //     (SELECT COUNT(DISTINCT us.user_id)
-  //     FROM user_subscriptions us
-  //     JOIN users u ON u.id = us.user_id
-  //     WHERE us.subscription_status_id = 1
-  //       AND us.end_date > NOW()
-  //       AND u.user_type_id = 1
-  //       AND u.status IN (1, 2, 3)
-  //     ) as active_subscriptions,
+    //     (SELECT COUNT(DISTINCT us.user_id)
+    //     FROM user_subscriptions us
+    //     JOIN users u ON u.id = us.user_id
+    //     WHERE us.subscription_status_id = 1
+    //       AND us.end_date > NOW()
+    //       AND u.user_type_id = 1
+    //       AND u.status IN (1, 2, 3)
+    //     ) as active_subscriptions,
 
-  //     (SELECT SUM(CASE WHEN psm.status_name = 'paid' THEN p.amount ELSE 0 END) 
-  //     FROM payments p 
-  //     LEFT JOIN payment_status_master psm ON p.payment_status_id = psm.id 
-  //     WHERE DATE(p.payment_date) = CURDATE()) as today_revenue,
+    //     (SELECT SUM(CASE WHEN psm.status_name = 'paid' THEN p.amount ELSE 0 END) 
+    //     FROM payments p 
+    //     LEFT JOIN payment_status_master psm ON p.payment_status_id = psm.id 
+    //     WHERE DATE(p.payment_date) = CURDATE()) as today_revenue,
 
-  //     (SELECT SUM(CASE WHEN psm.status_name = 'paid' THEN p.amount ELSE 0 END) 
-  //     FROM payments p 
-  //     LEFT JOIN payment_status_master psm ON p.payment_status_id = psm.id 
-  //     WHERE MONTH(p.payment_date) = MONTH(NOW()) AND YEAR(p.payment_date) = YEAR(NOW())) as monthly_revenue,
+    //     (SELECT SUM(CASE WHEN psm.status_name = 'paid' THEN p.amount ELSE 0 END) 
+    //     FROM payments p 
+    //     LEFT JOIN payment_status_master psm ON p.payment_status_id = psm.id 
+    //     WHERE MONTH(p.payment_date) = MONTH(NOW()) AND YEAR(p.payment_date) = YEAR(NOW())) as monthly_revenue,
 
-  //     (SELECT COUNT(*) FROM success_stories WHERE status = 'pending') as pending_success_stories,
-  //     (SELECT COUNT(*) FROM refund_requests WHERE refund_status = 'pending') as pending_refunds
-  // `);
+    //     (SELECT COUNT(*) FROM success_stories WHERE status = 'pending') as pending_success_stories,
+    //     (SELECT COUNT(*) FROM refund_requests WHERE refund_status = 'pending') as pending_refunds
+    // `);
 
 
-  const [stats] = await query(`
+    const [stats] = await query(`
       SELECT 
         (SELECT COUNT(*) FROM users WHERE user_type_id = 1) as total_users,
         (SELECT COUNT(*) FROM users WHERE user_type_id = 1 AND DATE(created_at) = CURDATE()) as today_registrations,
@@ -7415,7 +7415,7 @@ export async function getAdminDashboard(req, res) {
         },
         revenue_overview: {
           chart_data: revenueData,
-          title: "Revenue Overview", 
+          title: "Revenue Overview",
           subtitle: "Monthly revenue collection"
         },
         recent_members: {
@@ -7442,8 +7442,8 @@ export async function getAdminDashboard(req, res) {
     });
   } catch (error) {
     console.error('Admin Dashboard Error:', error);
-    res.status(500).json({ 
-      success: false, 
+    res.status(500).json({
+      success: false,
       message: 'Server error',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });

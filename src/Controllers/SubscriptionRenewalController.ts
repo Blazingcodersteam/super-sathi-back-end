@@ -50,12 +50,12 @@ export const initiateAuthenticatedRenewal = async (req: Request, res: Response):
 
     const sub = subscription[0];
     let planPrice = parseFloat(sub.monthly_price);
-    
+
     // Validate amount is at least ₹1 (100 paise)
     if (isNaN(planPrice) || planPrice < 1) {
       console.error('Invalid plan price:', { monthly_price: sub.monthly_price, parsed: planPrice });
-      res.status(400).json({ 
-        success: false, 
+      res.status(400).json({
+        success: false,
         message: "Invalid plan price. Minimum amount is ₹1",
         debug: { monthly_price: sub.monthly_price, parsed: planPrice }
       });
@@ -78,7 +78,7 @@ export const initiateAuthenticatedRenewal = async (req: Request, res: Response):
       // Create Razorpay order
       const receipt = `renewal_${Date.now()}_${vendorId}`;
       const amountInPaise = Math.round(planPrice * 100);
-      
+
       console.log('Creating Razorpay order:', {
         vendor_id: vendorId,
         plan_price: planPrice,
@@ -240,8 +240,8 @@ export const verifyAuthenticatedRenewalPayment = async (req: Request, res: Respo
 
     // Check if already processed
     if (payment[0].payment_status === 'completed') {
-      res.status(400).json({ 
-        success: false, 
+      res.status(400).json({
+        success: false,
         message: "Payment already processed",
         data: { payment_id: payment[0].payment_id, status: 'completed' }
       });
@@ -259,8 +259,8 @@ export const verifyAuthenticatedRenewalPayment = async (req: Request, res: Respo
     }
 
     if (razorpayPayment.status !== 'captured') {
-      res.status(400).json({ 
-        success: false, 
+      res.status(400).json({
+        success: false,
         message: "Payment not captured",
         payment_status: razorpayPayment.status
       });
@@ -458,7 +458,7 @@ export const handleCCAvenueRenewalCallback = async (req: Request, res: Response)
           });
         });
 
-        const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+        const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
         res.redirect(`${frontendUrl}/vendor/renewal/success?order_id=${orderId}&tracking_id=${trackingId}&status=success`);
 
       } catch (txnError: any) {
@@ -468,7 +468,7 @@ export const handleCCAvenueRenewalCallback = async (req: Request, res: Response)
 
         console.error(`[CRITICAL PAYMENT RECONCILIATION NEEDED] CCAvenue renewal payment was captured (OrderId: ${orderId}, TrackingId: ${trackingId}, Vendor: ${vendorId}), but DB transaction failed and was rolled back!`, txnError);
 
-        const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+        const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
         res.redirect(`${frontendUrl}/vendor/renewal/failed?order_id=${orderId}&status=failed&message=${encodeURIComponent('Payment captured but renewal update failed. Support has been notified.')}`);
       }
 
@@ -483,13 +483,13 @@ export const handleCCAvenueRenewalCallback = async (req: Request, res: Response)
         WHERE gateway_order_id = ? AND vendor_id = ?
       `, [decryptedData.failure_message || 'Payment failed', JSON.stringify(decryptedData), orderId, vendorId]);
 
-      const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+      const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
       res.redirect(`${frontendUrl}/vendor/renewal/failed?order_id=${orderId}&status=failed&message=${encodeURIComponent(decryptedData.failure_message || 'Payment failed')}`);
     }
 
   } catch (error: any) {
     console.error("CCAvenue Renewal Callback Error:", error);
-    const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
     res.redirect(`${frontendUrl}/vendor/renewal/failed?status=error&message=${encodeURIComponent('Server error occurred')}`);
   } finally {
     if (connection) {
@@ -506,7 +506,7 @@ export const handleCCAvenueRenewalCancel = async (req: Request, res: Response): 
     const { encResp } = req.body;
 
     if (!encResp) {
-      const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+      const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
       res.redirect(`${frontendUrl}/vendor/renewal/cancelled?status=cancelled&error=missing_data`);
       return;
     }
@@ -525,12 +525,12 @@ export const handleCCAvenueRenewalCancel = async (req: Request, res: Response): 
       WHERE gateway_order_id = ? AND vendor_id = ?
     `, [JSON.stringify(decryptedData), orderId, vendorId]);
 
-    const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
     res.redirect(`${frontendUrl}/vendor/renewal/cancelled?order_id=${orderId}&status=cancelled`);
 
   } catch (error: any) {
     console.error("CCAvenue Renewal Cancel Error:", error);
-    const frontendUrl = process.env.FRONTEND_URL || 'https://vivaaha.net';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://staging.supersathi.com';
     res.redirect(`${frontendUrl}/vendor/renewal/cancelled?status=error&message=${encodeURIComponent('Server error occurred')}`);
   }
 };

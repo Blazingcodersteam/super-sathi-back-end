@@ -20,20 +20,20 @@ let isWorkerRunning = false;
 
 enum CallStatus {
   INITIATED = 'initiated',
-  RINGING   = 'ringing',
-  ACCEPTED  = 'accepted',
-  DECLINED  = 'declined',
-  ENDED     = 'ended',
-  MISSED    = 'missed',
-  FAILED    = 'failed'
+  RINGING = 'ringing',
+  ACCEPTED = 'accepted',
+  DECLINED = 'declined',
+  ENDED = 'ended',
+  MISSED = 'missed',
+  FAILED = 'failed'
 }
 
 // alert_types_master IDs
 const ALERT_INCOMING_CALL = 6;
 const ALERT_CALL_ACCEPTED = 7;
 const ALERT_CALL_DECLINED = 8;
-const ALERT_CALL_ENDED    = 9;
-const ALERT_CALL_MISSED   = 10;
+const ALERT_CALL_ENDED = 9;
+const ALERT_CALL_MISSED = 10;
 
 function generateAgoraToken(channelName: string, uid: number): string {
   const currentTimestamp = Math.floor(Date.now() / 1000);
@@ -231,7 +231,7 @@ export async function createCall(req: Request, res: Response) {
 
       // Check availability time slot
       if (receiverPrivacy.availability_time_slot === 'specific_time' &&
-          receiverPrivacy.availability_start_time && receiverPrivacy.availability_end_time) {
+        receiverPrivacy.availability_start_time && receiverPrivacy.availability_end_time) {
         const now = new Date();
         // Check day availability
         if (receiverPrivacy.availability_days) {
@@ -240,7 +240,7 @@ export async function createCall(req: Request, res: Response) {
             days = typeof receiverPrivacy.availability_days === 'string'
               ? JSON.parse(receiverPrivacy.availability_days)
               : receiverPrivacy.availability_days;
-          } catch (_) {}
+          } catch (_) { }
           if (days.length > 0) {
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const today = dayNames[now.getDay()];
@@ -336,9 +336,9 @@ export async function createCall(req: Request, res: Response) {
             call_type,
             call_id: callId,
           },
-          fallbackSubject: `Incoming ${call_type.charAt(0).toUpperCase() + call_type.slice(1)} Call - Vivaaha Matrimony`,
-          fallbackBody: `You have an incoming ${call_type} call from ${caller.first_name} ${caller.last_name}. Please open your Vivaaha app to accept or decline the call.`,
-          fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Incoming ${call_type} Call</h2><p>You have an incoming ${call_type} call from <strong>${caller.first_name} ${caller.last_name}</strong>.</p><p>Please open your Vivaaha app to accept or decline the call.</p><p>Best regards,<br>Vivaaha Matrimony Team</p></div>`,
+          fallbackSubject: `Incoming ${call_type.charAt(0).toUpperCase() + call_type.slice(1)} Call - Super Sathi Matrimony`,
+          fallbackBody: `You have an incoming ${call_type} call from ${caller.first_name} ${caller.last_name}. Please open your Super Sathi app to accept or decline the call.`,
+          fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2>Incoming ${call_type} Call</h2><p>You have an incoming ${call_type} call from <strong>${caller.first_name} ${caller.last_name}</strong>.</p><p>Please open your Super Sathi app to accept or decline the call.</p><p>Best regards,<br>Super Sathi Matrimony Team</p></div>`,
           meta: {
             event: "incoming_call",
             senderUserId: userId,
@@ -380,7 +380,7 @@ export async function createCall(req: Request, res: Response) {
       if (io) {
         io.to(`user_${receiver_id}`).emit('incoming_call', callPayload);
       }
-    } catch (_) {}
+    } catch (_) { }
 
     // Send FCM push notification (works when app is background/killed)
     try {
@@ -530,7 +530,7 @@ export async function acceptCall(req: Request, res: Response) {
           call_type: call.call_type,
         });
       }
-    } catch (_) {}
+    } catch (_) { }
 
     res.json({
       success: true,
@@ -600,7 +600,7 @@ export async function declineCall(req: Request, res: Response) {
           receiver_id: userId,
         });
       }
-    } catch (_) {}
+    } catch (_) { }
 
     res.json({ success: true, message: 'Call declined successfully' });
 
@@ -672,7 +672,7 @@ export async function endCall(req: Request, res: Response) {
           duration_seconds: callDuration,
         });
       }
-    } catch (_) {}
+    } catch (_) { }
 
     res.json({
       success: true,

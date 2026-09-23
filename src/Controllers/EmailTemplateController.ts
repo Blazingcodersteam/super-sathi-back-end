@@ -50,7 +50,7 @@ export class EmailTemplateController {
         ORDER BY et.deleted_at ASC, et.created_at DESC
         LIMIT ? OFFSET ?
       `;
-      
+
       const templates = await query(templatesQuery, [...queryParams, limit, offset]);
 
       res.json({
@@ -524,15 +524,15 @@ export class EmailTemplateController {
       // Default sample data
       const sampleData = {
         site_logo: 'https://example.com/logo.png',
-        site_name: 'Vivaaha',
-        site_url: 'https://vivaaha.com',
+        site_name: 'Super Sathi',
+        site_url: 'https://supersathi.com',
         current_date: new Date().toLocaleDateString(),
         current_year: new Date().getFullYear(),
         user_name: 'John Doe',
         email: 'john.doe@example.com',
         phone: '+91-9876543210',
         profile_id: 'VH123456',
-        login_url: 'https://vivaaha.com/login',
+        login_url: 'https://supersathi.com/login',
         otp: '123456',
         plan_name: 'Gold Plus',
         plan_duration: '6 months',
@@ -541,7 +541,7 @@ export class EmailTemplateController {
         valid_until: '2024-12-31',
         temp_password: 'TempPass123',
         registration_date: new Date().toLocaleDateString(),
-        admin_url: 'https://admin.vivaaha.com',
+        admin_url: 'https://admin.supersathi.com',
         staff_name: 'Jane Smith',
         role_name: 'Content Manager',
         access_level: 'Level 2',
@@ -556,7 +556,7 @@ export class EmailTemplateController {
       Object.keys(sampleData).forEach(key => {
         const placeholder = `{{${key}}}`;
         const value = sampleData[key];
-        
+
         previewSubject = previewSubject.replace(new RegExp(placeholder, 'g'), value);
         previewBodyHtml = previewBodyHtml.replace(new RegExp(placeholder, 'g'), value);
         previewBodyText = previewBodyText.replace(new RegExp(placeholder, 'g'), value);

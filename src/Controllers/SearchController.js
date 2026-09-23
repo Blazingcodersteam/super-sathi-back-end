@@ -579,8 +579,12 @@ async function searchProfilesComprehensive(req, res) {
             const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profile.id, profile.id, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profile.id, profile.id, userId, userId]);
             // Get audio files for each profile
             const audioFiles = await query(`
         SELECT * FROM user_audio_files WHERE user_id = ? ORDER BY created_at DESC
@@ -1234,8 +1238,12 @@ async function searchProfilesOLD(req, res) {
             const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profile.id, profile.id, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profile.id, profile.id, userId, userId]);
             // Combine all actions
             const allActions = [...matchActions];
             if (reportAction) {
@@ -1856,8 +1864,12 @@ async function searchProfiles(req, res) {
             const [connectStatus] = await query(`
         SELECT status FROM connect_now_requests
         WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-        ORDER BY created_at DESC LIMIT 1
-      `, [userId, profile.id, profile.id, userId]);
+        ORDER BY
+          CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+          COALESCE(updated_at, created_at) DESC,
+          id DESC
+        LIMIT 1
+      `, [userId, profile.id, profile.id, userId, userId]);
             // Combine all actions
             const allActions = [...matchActions];
             if (reportAction) {
@@ -2153,7 +2165,11 @@ async function searchByVivahaId(req, res) {
         // Get connect status
         const [connectStatus] = await query(`SELECT status FROM connect_now_requests
        WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-       ORDER BY created_at DESC LIMIT 1`, [userId, profile.id, profile.id, userId]);
+       ORDER BY
+         CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+         COALESCE(updated_at, created_at) DESC,
+         id DESC
+       LIMIT 1`, [userId, profile.id, profile.id, userId, userId]);
         // Combine all actions
         const allActions = [...matchActions];
         if (reportAction) {
@@ -2262,7 +2278,11 @@ async function getProfileById(req, res) {
         // Get connect status between viewer and profile owner
         const [connectStatus] = await query(`SELECT status FROM connect_now_requests
        WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
-       ORDER BY created_at DESC LIMIT 1`, [userId, profileId, profileId, userId]);
+       ORDER BY
+         CASE WHEN sender_id = ? AND status = 'pending' THEN 0 ELSE 1 END ASC,
+         COALESCE(updated_at, created_at) DESC,
+         id DESC
+       LIMIT 1`, [userId, profileId, profileId, userId, userId]);
         // Attach photos BEFORE privacy filter so album_photo_privacy is enforced
         const filteredProfile = await (0, privacyFilter_1.applyPrivacyFilter)(Object.assign(Object.assign({}, profile), { education, career, address, family_details: family_details || {}, hobbies: hobbies || [], audio_files: audioFiles || [], photos: photos || [], connect_status: (connectStatus === null || connectStatus === void 0 ? void 0 : connectStatus.status) || null }), userId);
         if (!filteredProfile) {

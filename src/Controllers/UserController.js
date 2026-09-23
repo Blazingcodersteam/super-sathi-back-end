@@ -129,7 +129,7 @@ async function sendMatchingProfilesEmail(userId, email, firstName, religionId, c
             <img src="${profilePicture}" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/60x60/cccccc/666666?text=No+Image'">
             <div>
               <h4 style="margin: 0; color: #d63384;">${profile.first_name} ${profile.last_name}</h4>
-              <p style="margin: 5px 0; color: #888; font-size: 12px;">Vivaaha ID: ${profile.vivaaha_user_id}</p>
+              <p style="margin: 5px 0; color: #888; font-size: 12px;">Super Sathi ID: ${profile.vivaaha_user_id}</p>
               <p style="margin: 5px 0; color: #666;">Age: ${profile.age || 'N/A'} | Height: ${profile.height || 'N/A'} cm</p>
               <p style="margin: 5px 0; color: #666;">${profile.religion_name || ''} ${profile.caste_name ? '- ' + profile.caste_name : ''}</p>
               <p style="margin: 5px 0; color: #666;">${profile.occupation || ''} ${profile.annual_income ? '| ₹' + profile.annual_income : ''}</p>
@@ -139,10 +139,10 @@ async function sendMatchingProfilesEmail(userId, email, firstName, religionId, c
         </div>
       `;
         });
-        const emailSubject = `Welcome to Vivaaha! Here are ${matchingProfiles.length} potential matches for you`;
+        const emailSubject = `Welcome to Super Sathi! Here are ${matchingProfiles.length} potential matches for you`;
         const emailBody = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #d63384;">Welcome to Vivaaha Matrimony, ${firstName}!</h2>
+        <h2 style="color: #d63384;">Welcome to Super Sathi Matrimony, ${firstName}!</h2>
         <p>Congratulations on creating your profile! We've found some potential matches that share your preferences:</p>
 
         <h3 style="color: #333; border-bottom: 2px solid #d63384; padding-bottom: 5px;">Your Potential Matches</h3>
@@ -153,19 +153,19 @@ async function sendMatchingProfilesEmail(userId, email, firstName, religionId, c
         </div>
 
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${process.env.FRONTEND_URL || 'https://vivaaha.com'}/login"
+          <a href="${process.env.FRONTEND_URL || 'https://staging.supersathi.com'}/login"
              style="background-color: #d63384; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
             View All Matches
           </a>
         </div>
 
         <p>Happy matchmaking!</p>
-        <p>Best regards,<br>Vivaaha Matrimony Team</p>
+        <p>Best regards,<br>Super Sathi Matrimony Team</p>
       </div>
     `;
         await EmailService_1.EmailService.sendTemplateEmail('welcome_matches', email, { user_name: firstName, match_count: matchingProfiles.length }, {
-            fallbackSubject: `Welcome to Vivaaha! Here are ${matchingProfiles.length} potential matches for you`,
-            fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2 style="color:#d63384">Welcome to Vivaaha Matrimony, ${firstName}!</h2><p>We've found ${matchingProfiles.length} potential matches for you.</p><div style="text-align:center;margin:30px 0"><a href="${process.env.FRONTEND_URL || 'https://vivaaha.com'}/login" style="background:#d63384;color:white;padding:12px 30px;text-decoration:none;border-radius:5px;display:inline-block">View All Matches</a></div><p>Best regards,<br>Vivaaha Matrimony Team</p></div>`,
+            fallbackSubject: `Welcome to Super Sathi! Here are ${matchingProfiles.length} potential matches for you`,
+            fallbackHtml: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><h2 style="color:#d63384">Welcome to Super Sathi Matrimony, ${firstName}!</h2><p>We've found ${matchingProfiles.length} potential matches for you.</p><div style="text-align:center;margin:30px 0"><a href="${process.env.FRONTEND_URL || 'https://staging.supersathi.com'}/login" style="background:#d63384;color:white;padding:12px 30px;text-decoration:none;border-radius:5px;display:inline-block">View All Matches</a></div><p>Best regards,<br>Super Sathi Matrimony Team</p></div>`,
         });
     }
     catch (error) {
@@ -604,7 +604,7 @@ async function createProfileOld(req, res) {
         }
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
-        // Generate unique Vivaaha ID
+        // Generate unique Super Sathi ID
         const vivahaUserId = await (0, MatchActionsController_1.generateUniqueVivahaId)();
         // Calculate age
         const birthDate = new Date(date_of_birth);
@@ -724,7 +724,7 @@ async function createProfileOld(req, res) {
 
                 <p style="font-size: 16px; color: #333;">Dear <strong>${first_name} ${last_name}</strong>,</p>
 
-                <p style="font-size: 14px; color: #666; line-height: 1.6;">Thank you for registering with Vivaaha Matrimony!</p>
+                <p style="font-size: 14px; color: #666; line-height: 1.6;">Thank you for registering with Super Sathi Matrimony!</p>
 
                 <p style="font-size: 14px; color: #666; line-height: 1.6;">Your account has been created successfully and is currently under review by our team. You will receive an email notification once your account is approved.</p>
 
@@ -752,7 +752,7 @@ async function createProfileOld(req, res) {
                 </div>
 
                 <div style="text-align: center; margin: 30px 0;">
-                  <a href="${process.env.FRONTEND_URL || 'https://vivaaha.com'}/login"
+                  <a href="${process.env.FRONTEND_URL || 'https://staging.supersathi.com'}/login"
                      style="background-color: #d63384; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
                     Login to Your Account
                   </a>
@@ -761,7 +761,7 @@ async function createProfileOld(req, res) {
                 <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
 
                 <p style="font-size: 14px; color: #666; margin-bottom: 5px;">Best regards,</p>
-                <p style="font-size: 14px; color: #d63384; font-weight: bold; margin: 0;">Vivaaha Matrimony Team</p>
+                <p style="font-size: 14px; color: #d63384; font-weight: bold; margin: 0;">Super Sathi Matrimony Team</p>
               </div>
             </div>
           `,

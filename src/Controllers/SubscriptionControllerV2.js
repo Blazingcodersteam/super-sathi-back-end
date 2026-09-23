@@ -27,7 +27,7 @@ const subscriptionAccess_1 = require("../utils/subscriptionAccess");
 const db = require("../database");
 const query = utils.promisify(db.query).bind(db);
 // ============================================
-// VIVAAHA ELITE & SIGNATURE SUBSCRIPTION API
+// Super Sathi ELITE & SIGNATURE SUBSCRIPTION API
 // ============================================
 /**
  * Get Subscription Plans (Elite & Signature)

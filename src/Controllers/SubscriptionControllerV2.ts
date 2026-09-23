@@ -5,7 +5,7 @@ const db = require("../database");
 const query = utils.promisify(db.query).bind(db);
 
 // ============================================
-// VIVAAHA ELITE & SIGNATURE SUBSCRIPTION API
+// Super Sathi ELITE & SIGNATURE SUBSCRIPTION API
 // ============================================
 
 /**
@@ -265,7 +265,7 @@ export async function purchaseVerificationBadge(req, res) {
     if (existing) {
       return res.status(400).json({
         success: false,
-        message: existing.verification_status === 'approved' 
+        message: existing.verification_status === 'approved'
           ? "You already have a verified badge"
           : "Your verification request is pending approval"
       });
